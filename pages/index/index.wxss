@@ -18,3 +18,8 @@
 
 
 .home-feedback{display:flex;align-items:center;gap:10rpx;background:#E8EFE3;border:1rpx solid #D4E1CD;border-radius:30rpx;padding:15rpx 18rpx;color:#315B43;font-size:23rpx;flex-shrink:0;min-height:64rpx}.feedback-bubble{width:27rpx;height:22rpx;border:2rpx solid #597C5E;border-radius:8rpx;position:relative}.feedback-bubble:after{content:"";position:absolute;left:5rpx;bottom:-5rpx;border-left:2rpx solid #597C5E;height:6rpx;transform:skewY(-35deg)}.home-heading{gap:16rpx}.home-title{font-size:42rpx}.home-label{font-size:21rpx}.section-head .view-all{flex-shrink:0}.routes-section{margin-top:30rpx}
+.chat-entry{display:flex;align-items:center;gap:20rpx;margin-top:22rpx;padding:24rpx;border:1rpx solid #D9E5D8;border-radius:24rpx;background:linear-gradient(135deg,#F2F7EE,#E6EFE2)}
+.chat-entry-avatar{width:60rpx;height:60rpx;flex-shrink:0;border-radius:50%;background:#173F35;color:#fff;display:flex;align-items:center;justify-content:center;font-size:26rpx;font-weight:600}
+.chat-entry-title{font-size:28rpx;font-weight:650;color:#22402F}
+.chat-entry-note{font-size:22rpx;color:#6C8071;margin-top:4rpx}
+.chat-entry-arrow{font-size:30rpx;color:#43654C;flex-shrink:0}

@@ -12,6 +12,14 @@
       <button class="planner-hero-button" bindtap="goCreate" hover-class="pressed" aria-label="按偏好规划 1 至 5 天河源行程"><text>开始规划</text><text class="planner-hero-arrow">→</text></button>
     </view>
   </view>
+  <view class="chat-entry" bindtap="goChat" hover-class="pressed" aria-label="用对话方式说出你的出游想法">
+    <view class="chat-entry-avatar">智</view>
+    <view class="grow">
+      <view class="chat-entry-title">说不清想去哪？聊两句</view>
+      <view class="chat-entry-note">像「两天带爸妈看温泉」这样说一句就行</view>
+    </view>
+    <text class="chat-entry-arrow">→</text>
+  </view>
   <view wx:if="{{draftCount}}" class="resume-card" bindtap="goPlan" hover-class="pressed"><view class="resume-mark"><view></view></view><view class="grow"><view class="resume-title">继续安排 · {{draftTitle}}</view><view class="resume-note">{{draftDays}} 天 · {{draftCount}} 个地点 · 草稿保存在本机</view></view><text class="resume-arrow">→</text></view>
   <button wx:else class="home-manual" bindtap="goPlan" hover-class="pressed"><text>已经有想法？自己挑地点、排时间</text><text>→</text></button>
   

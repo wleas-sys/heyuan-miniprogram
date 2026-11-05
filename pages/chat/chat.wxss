@@ -1,0 +1,119 @@
+/* 对话页：iOS 消息式的左 AI / 右用户气泡，底部固定输入区，整体沿用全局的墨绿 + 米白配色 */
+.chat-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--paper);
+  overflow: hidden;
+}
+
+.chat-scroll { flex: 1; min-height: 0; }
+.chat-inner { padding: 28rpx 28rpx 20rpx; }
+
+/* 单条消息 */
+.msg { display: flex; align-items: flex-start; gap: 16rpx; margin-bottom: 26rpx; }
+.msg.user { flex-direction: row-reverse; }
+
+.avatar {
+  width: 64rpx; height: 64rpx; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: var(--green); color: #fff;
+  font-size: 26rpx; font-weight: 600;
+}
+
+.bubble {
+  max-width: 78%;
+  padding: 22rpx 26rpx;
+  background: #fff;
+  border: 1rpx solid var(--line);
+  border-radius: 10rpx 26rpx 26rpx 26rpx;
+  box-shadow: 0 4rpx 16rpx rgba(23, 63, 53, .04);
+}
+/* 带方案卡片时让气泡撑满，卡片才有横向空间 */
+.bubble.has-cards { max-width: 100%; flex: 1; }
+
+.msg.user .bubble {
+  background: var(--green);
+  border-color: var(--green);
+  border-radius: 26rpx 10rpx 26rpx 26rpx;
+}
+
+.bubble-text { font-size: 27rpx; line-height: 1.78; word-break: break-word; }
+.msg.user .bubble-text { color: #fff; }
+
+/* 输入中的三点动画 */
+.typing { display: flex; align-items: center; gap: 10rpx; padding: 28rpx 26rpx; }
+.typing-dot {
+  width: 12rpx; height: 12rpx; border-radius: 50%;
+  background: #B4C4B7;
+  animation: typing-bounce 1.2s infinite ease-in-out;
+}
+.typing-dot:nth-child(2) { animation-delay: .18s; }
+.typing-dot:nth-child(3) { animation-delay: .36s; }
+@keyframes typing-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: .5; }
+  30% { transform: translateY(-8rpx); opacity: 1; }
+}
+
+/* 方案卡片 */
+.cards { margin-top: 20rpx; display: flex; flex-direction: column; gap: 18rpx; }
+.plan-card {
+  padding: 22rpx;
+  background: #F8FAF6;
+  border: 1rpx solid var(--line);
+  border-radius: 22rpx;
+}
+.plan-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16rpx; }
+.plan-title { flex: 1; min-width: 0; font-size: 29rpx; font-weight: 650; line-height: 1.5; }
+.plan-score { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; color: var(--green); font-size: 27rpx; font-weight: 650; }
+.plan-score-unit { font-size: 18rpx; font-weight: 400; color: var(--muted); }
+.plan-meta { margin-top: 8rpx; font-size: 22rpx; color: var(--muted); }
+.plan-days { margin-top: 14rpx; display: flex; flex-direction: column; gap: 8rpx; }
+.plan-day { display: flex; gap: 12rpx; font-size: 23rpx; line-height: 1.7; }
+.plan-day-label { flex-shrink: 0; color: var(--green); }
+.plan-day-names { color: #48604F; word-break: break-word; }
+.plan-reason { margin-top: 14rpx; font-size: 22rpx; line-height: 1.7; color: var(--muted); }
+.plan-use {
+  margin-top: 20rpx; width: 100%;
+  padding: 18rpx;
+  background: var(--green); color: #fff;
+  border-radius: 16rpx; font-size: 26rpx; text-align: center;
+}
+
+/* 快捷短语 */
+.chips { display: flex; flex-wrap: wrap; gap: 14rpx; padding: 0 28rpx 16rpx; }
+.chip {
+  padding: 14rpx 26rpx;
+  background: #fff; border: 1rpx solid var(--line); border-radius: 40rpx;
+  font-size: 25rpx; color: var(--green);
+}
+.chip-pressed { background: var(--soft); }
+
+/* 底部输入 */
+.composer {
+  display: flex; align-items: center; gap: 16rpx;
+  padding: 16rpx 28rpx calc(16rpx + env(safe-area-inset-bottom));
+  background: rgba(255, 255, 255, .95);
+  border-top: 1rpx solid var(--line);
+}
+.composer-input {
+  flex: 1; min-width: 0; height: 84rpx;
+  padding: 0 28rpx;
+  background: #F1F4EE;
+  border-radius: 42rpx;
+  font-size: 27rpx;
+}
+.composer-ph { color: #9AA89D; }
+.composer-send {
+  flex-shrink: 0; width: 132rpx; height: 84rpx;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--green); color: #fff;
+  border-radius: 42rpx; font-size: 27rpx;
+}
+
+.preview-notice {
+  padding: 18rpx 28rpx;
+  background: #F0EDE3; color: #776C52;
+  font-size: 23rpx; text-align: center;
+}

@@ -25,6 +25,7 @@ Page(ui.page({
   goPlaces(e) { getApp().globalData.browseFilter = e.currentTarget.dataset.category || '全部'; wx.switchTab({ url: '/pages/attractions/attractions' }) },
   goPlan() { wx.switchTab({ url: '/pages/plan/plan' }) },
   goCreate() { if (ui.singlePage()) return ui.toast('请先点击底部“前往小程序”'); wx.navigateTo({ url: '/pages/plan-create/plan-create', fail: () => ui.toast('暂时无法打开，请重试') }) },
+  goChat() { if (ui.singlePage()) return ui.toast('请先点击底部“前往小程序”'); wx.navigateTo({ url: '/pages/chat/chat', fail: () => ui.toast('暂时无法打开，请重试') }) },
   photoError(e) {
     const kind = e.currentTarget.dataset.kind, index = Number(e.currentTarget.dataset.index)
     if (kind === 'hero') return this.setData({ heroFailed: true })

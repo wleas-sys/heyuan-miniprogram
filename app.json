@@ -9,6 +9,7 @@
     "pages/food/food",
     "pages/about/about",
     "pages/plan-create/plan-create",
+    "pages/chat/chat",
     "pages/feedback/feedback"
   ],
   "window": {
