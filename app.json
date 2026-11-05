@@ -1,0 +1,78 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/attractions/attractions",
+    "pages/plan/plan",
+    "pages/profile/profile",
+    "pages/plan-result/plan-result",
+    "pages/route-detail/route-detail",
+    "pages/food/food",
+    "pages/about/about",
+    "pages/plan-create/plan-create",
+    "pages/feedback/feedback"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#F6F7F3",
+    "navigationBarTitleText": "万绿智游",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F6F7F3",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#748279",
+    "selectedColor": "#173F35",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/attractions/attractions",
+        "text": "景点"
+      },
+      {
+        "pagePath": "pages/plan/plan",
+        "text": "行程"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
+  "subpackages": [
+    {
+      "root": "pkg-detail",
+      "name": "pkg-detail",
+      "pages": [
+        "pages/attraction-detail/attraction-detail"
+      ]
+    },
+    {
+      "root": "pkg-detail-b",
+      "name": "pkg-detail-b",
+      "pages": [
+        "pages/attraction-detail/attraction-detail"
+      ]
+    },
+    {
+      "root": "pkg-detail-c",
+      "name": "pkg-detail-c",
+      "pages": [
+        "pages/attraction-detail/attraction-detail"
+      ]
+    }
+  ],
+  "preloadRule": {
+    "pages/index/index": {
+      "network": "all",
+      "packages": [
+        "pkg-detail"
+      ]
+    }
+  },
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents",
+  "sitemapLocation": "sitemap.json"
+}

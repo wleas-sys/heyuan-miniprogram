@@ -1,0 +1,142 @@
+<view wx:if="{{singlePage}}" class="timeline-notice">正在预览。收藏与安排行程，请点击底部“前往小程序”。</view>
+<view wx:if="{{place}}" class="detail-page with-dock">
+  <view wx:if="{{photos.length}}" class="detail-gallery">
+    <swiper class="gallery-swiper" current="{{currentPhoto}}" bindchange="imageChange" circular="{{photos.length > 1}}" autoplay="{{false}}" duration="300" indicator-dots="{{photos.length > 1}}" indicator-color="rgba(255,255,255,0.4)" indicator-active-color="#ffffff">
+      <swiper-item wx:for="{{photos}}" wx:key="file">
+        <image class="gallery-photo {{item.portrait ? 'portrait' : ''}}" src="{{item.file}}" mode="{{item.portrait ? 'aspectFit' : 'aspectFill'}}" data-index="{{index}}" bindtap="preview" aria-label="查看{{place.name}}实景大图"/>
+      </swiper-item>
+    </swiper>
+    <view class="gallery-counter-pill">
+      <text class="counter-cam">📷</text>
+      <text class="counter-text">{{currentPhoto + 1}} / {{photos.length}} 图集</text>
+    </view>
+    <view class="gallery-shade"></view>
+    <view class="gallery-bottom-bar">
+      <view class="gallery-subject-box">
+        <text class="gallery-subject-icon">📍</text>
+        <text class="gallery-subject">{{photos[currentPhoto].subject || place.name}}</text>
+      </view>
+      <text wx:if="{{photos.length > 1}}" class="gallery-swipe-hint">左右滑动看更多实景 ›</text>
+    </view>
+  </view>
+  <view wx:if="{{galleryPending}}" class="gallery-retry"><button bindtap="openFullGallery">{{galleryError ? '重新打开完整图集' : '查看完整实景图集'}} →</button></view>
+  <view class="detail-content">
+    <view class="detail-heading">
+      <view class="detail-location">{{place.region}}<text>·</text>{{place.category}}</view>
+      <view class="detail-title">{{place.name}}</view>
+      <view class="detail-tags"><text wx:for="{{place.tags}}" wx:key="*this">{{item}}</text></view>
+      <view class="duration-line"><view class="clock-icon"></view><text>{{place.durationText}}</text></view>
+    </view>
+    <view class="detail-intro">{{place.intro}}</view>
+    <view wx:if="{{!singlePage}}" id="notes" class="comments-card">
+      <view class="comments-heading"><view class="comments-title">随手记</view><button wx:if="{{!noteOpen}}" class="comment-write" bindtap="writeNote">{{noteText ? '编辑' : '记一笔'}}<text>↗</text></button></view>
+      <view class="comments-empty-copy">数据仅保存在本机微信小程序中，不上传、不公开，也不会随分享发送。更换设备或清理小程序数据后可能丢失。</view>
+      <view wx:if="{{!noteOpen}}" class="comment-content">{{noteText || '记下自己的游玩安排、感受或提醒。'}}</view>
+      <view wx:if="{{noteOpen}}" class="comment-editor">
+        <textarea class="comment-textarea" value="{{noteText}}" bindinput="noteInput" maxlength="500" placeholder="记下想去的地方、游玩感受或下次出发的提醒…" aria-label="编辑私人随手记" cursor-spacing="100" show-confirm-bar="{{false}}"/>
+        <view class="comment-editor-meta"><text>仅本机保存 · 仅自己可见</text><text>{{noteText.length}} / 500</text></view>
+        <view class="comment-actions"><button class="secondary" bindtap="closeNote">保存并收起</button><button class="primary" bindtap="saveNote">保存到本机</button></view>
+        <view class="comments-empty-copy">清空内容后保存，即可删除这条随手记。</view>
+      </view>
+      <view wx:if="{{noteError}}" class="comment-error"><text>{{noteError}}</text><view class="comment-recovery"><button bindtap="reloadNote">重新读取</button><button wx:if="{{noteText}}" bindtap="copyNoteInput">复制当前输入</button></view></view>
+      <view wx:if="{{noteStatus}}" class="comment-status">{{noteStatus}}</view>
+      <view wx:if="{{previousDraft || previousDraftError}}" class="legacy-note">
+        <button class="legacy-note-toggle" bindtap="togglePreviousDraft"><text>此前保存的本机草稿</text><text>{{previousDraftOpen ? '−' : '＋'}}</text></button>
+        <view wx:if="{{previousDraftOpen}}" class="legacy-note-content">{{previousDraftError || previousDraft}}</view>
+        <button wx:if="{{previousDraftOpen && previousDraft && !previousDraftError}}" class="legacy-note-delete" bindtap="deletePreviousDraft">删除这条本机草稿</button>
+      </view>
+      <button class="comment-feedback" bindtap="feedback">信息有误？反馈给我们 <text>→</text></button>
+    </view>
+    <view wx:if="{{highlights.length}}" class="detail-section">
+      <view class="detail-section-title">值得看看</view>
+      <view class="highlights">
+        <view wx:for="{{highlights}}" wx:key="*this" class="highlight-row">
+          <text class="highlight-index">0{{index + 1}}</text>
+          <text class="highlight-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="detail-section practical-card">
+      <view class="detail-section-title">出行与门票</view>
+      <view class="info-row">
+        <text class="info-label">地址</text>
+        <view class="info-value">{{place.address}}</view>
+        <button class="copy-address" bindtap="copyAddress" aria-label="复制地址">复制</button>
+      </view>
+      <view class="info-row">
+        <text class="info-label">开放</text>
+        <text class="info-value">{{place.hoursText}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">费用</text>
+        <text class="info-value">{{place.ticketText}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">适合</text>
+        <text class="info-value">{{place.suited}}</text>
+      </view>
+      <button class="map-button" bindtap="navigate">
+        <view class="location-pin"></view>
+        <text>{{place.map ? '在地图中查看位置' : '复制地点，到地图中查路线'}}</text>
+        <text class="map-arrow">↗</text>
+      </button>
+      <view wx:if="{{place.map && place.map.label}}" class="map-note">{{place.map.label}}</view>
+      <view wx:if="{{place.phone || place.bookingUrl}}" class="official-actions">
+        <button wx:if="{{place.phone}}" bindtap="call" class="official-button">电话咨询 <text>↗</text></button>
+        <button wx:if="{{place.bookingUrl}}" bindtap="booking" class="official-button">复制官方游览链接 <text>↗</text></button>
+      </view>
+    </view>
+    <view wx:if="{{tips.length}}" class="detail-section">
+      <view class="detail-section-title">游玩提醒</view>
+      <view class="tips-list">
+        <view wx:for="{{tips}}" wx:key="*this" class="tip-row">
+          <view class="tip-dot"></view>
+          <text>{{item}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="source-section">
+      <button class="source-toggle" bindtap="toggleSources">
+        <view>
+          <view class="source-title">资料与图片来源</view>
+          <view class="source-subtitle">更新于 {{checkedAt}}</view>
+        </view>
+        <text class="source-chevron">{{sourcesOpen ? '−' : '＋'}}</text>
+      </button>
+      <view wx:if="{{sourcesOpen}}" class="source-content">
+        <view class="source-explainer">停留时长为编辑建议；营业安排、票务与具体入口以当天公示为准。</view>
+        <view wx:for="{{sources}}" wx:key="id" class="source-item">
+          <view class="source-item-title">{{item.title}}</view>
+          <view class="source-scope">{{item.scope}}</view>
+          <button class="source-link" data-id="{{item.id}}" bindtap="copySource">复制资料链接 ↗</button>
+        </view>
+        <view wx:if="{{photos.length}}" class="photo-sources-title">实景图片</view>
+        <view wx:for="{{photos}}" wx:key="file" class="photo-source">
+          <view class="photo-source-name">{{index + 1}}. {{item.subject || place.name}}</view>
+          <view class="photo-credit">{{item.creditText}}</view>
+          <button wx:if="{{item.source}}" class="source-link" data-index="{{index}}" bindtap="copyPhotoSource">复制图片来源 ↗</button>
+        </view>
+      </view>
+    </view>
+    <view class="detail-end">万绿智游 · 把喜欢的地方放进行程</view>
+  </view>
+  <view wx:if="{{!singlePage}}" class="dock detail-dock">
+    <button class="dock-favorite {{saved ? 'saved' : ''}}" bindtap="favorite">
+      <view class="bookmark-icon"></view>
+      <text>{{saved ? '已收藏' : '收藏'}}</text>
+    </button>
+    <button class="dock-share" open-type="share">
+      <view class="share-arrow-icon"></view>
+      <text>分享</text>
+    </button>
+    <button class="dock-comments" bindtap="openNotes"><view class="comment-bubble-icon"></view><text>随手记</text></button>
+    <button class="primary" bindtap="add">{{added ? '已加入 · 去调整' : '加入行程'}}</button>
+  </view>
+</view>
+<view wx:else class="page">
+  <view class="empty">
+    <view class="empty-title">这个地点暂不可用</view>
+    <view class="small muted">链接可能已失效，可以返回首页重新查找。</view>
+    <button class="primary" bindtap="home">回到首页</button>
+  </view>
+</view>

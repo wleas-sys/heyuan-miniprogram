@@ -1,0 +1,30 @@
+<view wx:if="{{singlePage}}" class="timeline-notice">正在预览。收藏与安排行程，请点击底部“前往小程序”。</view>
+<view class="page tab-page home">
+  <view class="home-heading"><view><text class="home-label">万绿智游 · 行程规划</text><view class="home-title">安排一趟<text>河源行程</text></view></view><button class="home-feedback" bindtap="feedback" aria-label="意见与反馈"><view class="feedback-bubble"></view><text>意见反馈</text></button></view>
+  <view class="home-hero planning-hero">
+    <view class="hero-visual">
+      <image wx:if="{{hero.photo && !heroFailed}}" class="hero-image" src="{{hero.photo}}" mode="aspectFill" data-kind="hero" binderror="photoError"/><view class="hero-shade"></view>
+      <view class="hero-location"><view class="hero-location-dot"></view><text>万绿湖 · 东源县</text></view>
+      <view class="hero-copy"><view class="hero-title">去湖边，慢一点</view></view>
+    </view>
+    <view class="hero-planner">
+      <view class="hero-planner-copy"><view class="hero-planner-title">你的下一程</view><view class="hero-planner-note">1—5 天，按喜好安排</view></view>
+      <button class="planner-hero-button" bindtap="goCreate" hover-class="pressed" aria-label="按偏好规划 1 至 5 天河源行程"><text>开始规划</text><text class="planner-hero-arrow">→</text></button>
+    </view>
+  </view>
+  <view wx:if="{{draftCount}}" class="resume-card" bindtap="goPlan" hover-class="pressed"><view class="resume-mark"><view></view></view><view class="grow"><view class="resume-title">继续安排 · {{draftTitle}}</view><view class="resume-note">{{draftDays}} 天 · {{draftCount}} 个地点 · 草稿保存在本机</view></view><text class="resume-arrow">→</text></view>
+  <button wx:else class="home-manual" bindtap="goPlan" hover-class="pressed"><text>已经有想法？自己挑地点、排时间</text><text>→</text></button>
+  
+  <view class="section routes-section">
+    <view class="section-head"><view><view class="section-overline">也可以从现成路线开始</view><view class="section-title">精选出游路线 · 1至5天</view></view><button class="view-all" bindtap="toggleRoutes">{{routesExpanded ? '收起路线 ⌃' : '全部 ' + routeCount + ' 条 ›'}}</button></view>
+    <view class="route-stack"><view wx:for="{{routes}}" wx:key="id" class="route-card" data-id="{{item.id}}" bindtap="goRoute" hover-class="pressed"><image wx:if="{{item.photo}}" class="route-photo" src="{{item.photo}}" mode="aspectFill" lazy-load data-kind="routes" data-index="{{index}}" binderror="photoError"/><view wx:else class="route-photo route-placeholder">{{item.number}}</view><view class="route-copy"><view class="route-meta">{{item.tag}}<text> / {{item.stopCount}} 个地点</text></view><view class="route-name">{{item.title}}</view><view class="route-subtitle">{{item.subtitle}}</view></view><text class="route-arrow">›</text></view></view>
+  </view>
+  <view class="section">
+    <view class="section-head"><view><view class="section-overline">给行程添一个目的地</view><view class="section-title">想去哪里，再看看</view></view><button class="view-all" bindtap="goPlaces">全部 {{placeCount}} 个 <text>›</text></button></view>
+    <view class="home-search"><view class="search-icon"></view><input value="{{keyword}}" bindinput="input" bindconfirm="search" confirm-type="search" maxlength="40" placeholder="搜景点、古村、温泉" placeholder-class="search-placeholder" aria-label="搜索目的地"/><button bindtap="search" class="search-action" hover-class="pressed">搜索</button></view>
+    <view class="scene-row"><button wx:for="{{scenes}}" wx:key="category" class="scene" data-category="{{item.category}}" bindtap="goPlaces" hover-class="pressed"><view class="scene-icon {{item.icon}}"><view></view></view><view class="scene-title">{{item.title}}</view><view class="scene-note">{{item.note}}</view></button></view>
+    <view class="destination-grid"><view wx:for="{{places}}" wx:key="id" class="destination-card" data-id="{{item.id}}" bindtap="goDetail" hover-class="pressed"><view class="destination-visual"><image wx:if="{{item.photo}}" src="{{item.photo}}" mode="aspectFill" class="destination-photo" lazy-load data-kind="places" data-index="{{index}}" binderror="photoError"/><view wx:else class="no-photo">{{item.shortName}}</view><text class="destination-category">{{item.category}}</text></view><view class="destination-info"><view class="destination-region">{{item.region}}</view><view class="destination-name">{{item.shortName || item.name}}</view><view class="destination-teaser">{{item.teaser}}</view></view></view></view>
+  </view>
+  <view class="food-entry" bindtap="goFood" hover-class="pressed"><view class="food-word">食</view><view class="grow"><view class="food-title">下一餐，尝尝客家味</view><view class="food-note">认识本地菜，再找顺路的店</view></view><text class="food-arrow">↗</text></view>
+  <view class="end-note">万绿智游 · 把河源，安排进你的下一次出发</view>
+</view>

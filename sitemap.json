@@ -1,0 +1,1 @@
+{ "desc": "公开地点和路线可被索引，个人行程不索引", "rules": [ { "action": "disallow", "page": "pages/plan-result/plan-result" }, { "action": "disallow", "page": "pages/profile/profile" }, { "action": "disallow", "page": "pages/plan/plan" }, { "action": "allow", "page": "*" } ] }

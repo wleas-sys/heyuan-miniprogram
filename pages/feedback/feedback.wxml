@@ -1,0 +1,28 @@
+<view wx:if="{{singlePage}}" class="timeline-notice">请先点击“前往小程序”，再提交反馈。</view>
+<view class="page feedback-page">
+  <view class="feedback-heading"><text class="eyebrow">万绿智游</text><view class="title">把问题告诉我们</view><view class="subtitle">信息有误，或哪里用着不顺手，都可以说。</view></view>
+  <view class="card feedback-main">
+    <view class="feedback-symbol"><view></view><view></view><view></view></view>
+    <view class="feedback-title">意见反馈</view>
+    <view class="channel-description">描述问题，也可以附上截图。<view>在微信反馈页提交后，我们可在小程序后台查看。</view></view>
+    <view wx:if="{{context}}" class="feedback-context"><view class="context-label">正在反馈 · {{place.name}}</view><button class="link" bindtap="copyContext">复制地点说明</button><view class="context-hint">复制后，可粘贴到微信反馈页。</view></view>
+    <button wx:if="{{feedbackSupported}}" class="primary feedback-submit" open-type="feedback" bindtap="feedbackTap" disabled="{{singlePage}}">写反馈 <text>↗</text></button>
+    <view wx:else class="notice">当前微信暂不支持此入口，请更新微信，或从右上角“…”进入“反馈与投诉”。</view>
+    <view class="channel-hint">{{isSimulator ? '电脑模拟器无法验证提交，请用手机微信扫码测试。' : '点击后，在微信页面完成填写和提交。'}}</view>
+    <view wx:if="{{feedbackAttempted && !isSimulator}}" class="feedback-reminder">是否提交成功，以微信反馈页显示的结果为准。</view>
+  </view>
+  <view class="feedback-help">
+    <button class="help-toggle" bindtap="toggleHelp"><text>反馈页面没有打开？</text><text>{{helpOpen ? '−' : '＋'}}</text></button>
+    <view wx:if="{{helpOpen}}" class="help-content">
+      <view>请在手机微信中打开最新预览或体验版，再点“写反馈”。</view>
+      <view>也可以从右上角“…” → “反馈与投诉”进入，选择相应问题并提交。</view>
+      <view>只返回本页不会发送反馈，需在微信页面完成提交。</view>
+    </view>
+  </view>
+  <view class="feedback-secondary">
+    <button class="help-toggle" bindtap="toggleContact"><view><view class="contact-title">需要聊一聊？</view><view class="contact-subtitle">打开微信客服会话</view></view><text>{{contactOpen ? '−' : '＋'}}</text></button>
+    <view wx:if="{{contactOpen}}" class="contact-content"><view class="channel-description">客服通道需开通并有人接待。暂时联系不上时，建议使用上方意见反馈。</view><button class="secondary channel-button" open-type="contact" show-message-card="{{true}}" send-message-title="{{contactTitle}}" send-message-path="{{contactPath}}" send-message-img="{{place ? place.photo : ''}}" disabled="{{singlePage}}">进入客服会话 ↗</button></view>
+  </view>
+  <view wx:if="{{history.length || historyError}}" class="legacy-feedback card"><button class="history-toggle" bindtap="toggleHistory"><text>旧版本机记录 {{history.length ? '(' + history.length + ')' : ''}}</text><text>{{historyOpen ? '−' : '+'}}</text></button><view wx:if="{{historyOpen}}"><view class="channel-description">这些旧记录还没有发送。可复制内容，在微信反馈页重新提交。</view><view wx:if="{{historyError}}" class="notice">{{historyError}}</view><view wx:for="{{history}}" wx:key="id" class="legacy-item"><text class="small muted">{{item.time}}</text><view class="history-content">{{item.content}}</view><button class="link" data-id="{{item.id}}" bindtap="copyLegacy">复制内容</button></view><button wx:if="{{history.length}}" class="link" bindtap="clearHistory">清除本机旧记录</button></view></view>
+  <view class="feedback-footer">每一条具体的建议，都能让下一次出行更顺手。</view>
+</view>

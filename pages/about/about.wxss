@@ -1,0 +1,18 @@
+.about-brand { text-align:center; padding:34rpx 0 28rpx; }
+.brand-seal { width:104rpx; height:104rpx; border:1rpx solid #C4D4C5; color:#173F35; border-radius:30rpx; background:#EAF0E7; display:flex; align-items:center; justify-content:center; margin:0 auto 24rpx; font-family:"Songti SC","SimSun",serif; font-size:34rpx; letter-spacing:2rpx; }
+.brand-name { font-size:48rpx; font-weight:650; letter-spacing:3rpx; }
+.version { font-size:21rpx; color:#748279; letter-spacing:3rpx; margin:10rpx 0 20rpx; }
+.about-stats { display:flex; padding:24rpx 0; border-top:1rpx solid #E1E8DE; border-bottom:1rpx solid #E1E8DE; }
+.about-stats > view { flex:1; text-align:center; display:flex; flex-direction:column; }
+.about-stats > view + view { border-left:1rpx solid #E1E8DE; }
+.about-text { margin-top:16rpx; color:#5D7166; }
+.about-tags { margin-top:20rpx; }
+.fold-card { padding:0; margin-top:20rpx; overflow:hidden; }
+.fold-head { width:100%; display:flex; align-items:center; justify-content:space-between; padding:28rpx; text-align:left; font-size:29rpx; font-weight:550; gap:16rpx; }
+.fold-symbol { color:#748279; font-size:32rpx; font-weight:400; }
+.fold-body { padding:0 28rpx 22rpx; }
+.source-title { font-size:27rpx; font-weight:550; margin-bottom:7rpx; }
+.photo-source-row { display:flex; align-items:center; gap:18rpx; }
+.credit-photo { width:132rpx; height:100rpx; flex-shrink:0; border-radius:12rpx; background:#EAF0E7; }
+.credit-note { margin-top:14rpx; line-height:1.85; }
+.source-links { display:flex; flex-wrap:wrap; gap:26rpx; }
