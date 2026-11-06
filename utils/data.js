@@ -3880,6 +3880,9 @@ PLACES.forEach(p => { if (MAP_POINTS[p.id]) p.map = MAP_POINTS[p.id] })
 function getPlace(id) { return PLACES.find(p => p.id === id) || null }
 function getRoute(id) { return ROUTES.find(r => r.id === id) || null }
 const MEDIA = require('./media')
+const { imageBase } = require('./config')
+// 云端模式：配了图片地址就统一走网络，包体不再随每张图增长。
+const CLOUD_IMAGES = typeof imageBase === 'string' && imageBase.length > 0
 PLACES.forEach(p => {
   p.images = MEDIA.filter(m => m.id === p.id).map(m => ({
     file: m.file, subject: m.subject, credit: m.author, source: m.source,
@@ -3887,6 +3890,18 @@ PLACES.forEach(p => {
     year: m.year, note: m.note, width: m.width, height: m.height
   }))
   const cover = p.images[0]
+  if (CLOUD_IMAGES) {
+    // 每个地点都有一张远程封面。只替换主包里的封面（/assets/covers/），
+    // 分包里的副图（/pkg-xxx/photos/）保持本地——它们不占主包体积，替换反而丢图。
+    p.photo = imageBase + p.id + '.jpg'
+    p.images.forEach(img => { if (typeof img.file === 'string' && img.file.indexOf('/assets/covers/') === 0) img.file = p.photo })
+    if (!p.images.length) {
+      p.images = [{ file: p.photo, subject: p.name, credit: '', source: '', license: '', licenseUrl: '', rightsStatus: '', year: '', note: '', width: 0, height: 0 }]
+    }
+    p.photoCredit = cover ? cover.credit : ''
+    p.photoPortrait = !!cover && cover.height > cover.width
+    return
+  }
   // 只有确实登记了封面图的地点才给 photo。否则列表/行程会为一个不存在的
   // /assets/covers/<id>.jpg 发请求并 404（虽然 onError 会兜底成文字占位，但控制台很吵）。
   // 无图地点 photo 为空，WXML 直接走 wx:else 文字占位，详情页也直接省略图集。
