@@ -1338,7 +1338,7 @@ const PLACES = [
       "与万绿湖、镜花缘同在东源县，可安排在同一天或相邻半天。"
     ],
     "hoursText": "出发前确认开放时间与预约要求",
-    "ticketText": "成人票约88元，家庭票与儿童票以景区公示为准（待核对）",
+    "ticketText": "成人 88–118 元，儿童 60 元（门市 198 元，2026-11 核实，以现场公示为准）",
     "phone": "",
     "sourceKeys": [],
     "bookingUrl": "",
@@ -1377,7 +1377,7 @@ const PLACES = [
       "与万绿湖、苏家围同在东源县，可组合成一日游。"
     ],
     "hoursText": "出发前确认游船班次与开放时间",
-    "ticketText": "游船观光票价以当天公示为准（待核对）",
+    "ticketText": "沿江免费；游船门市 100 元、线上 68–88 元（以现场公示为准）",
     "phone": "",
     "sourceKeys": [],
     "bookingUrl": "",
@@ -1455,7 +1455,7 @@ const PLACES = [
       "与苏区革命旧址、御临门温泉同属紫金，可组合成一日。"
     ],
     "hoursText": "出发前确认开放与登山安全提示",
-    "ticketText": "票价以当天公示为准（待核对）",
+    "ticketText": "免费开放（未开发自然山体，无售票处）",
     "phone": "",
     "sourceKeys": [],
     "bookingUrl": "",
@@ -1572,7 +1572,7 @@ const PLACES = [
       "与御临门温泉同属紫金，可按位置就近选择。"
     ],
     "hoursText": "出发前确认开放时间与预约要求",
-    "ticketText": "温泉票价以当天公示为准（待核对）",
+    "ticketText": "御临门线上 98–138 元（门市 180 元）；九和大众泡池 50–68 元（以现场公示为准）",
     "phone": "",
     "sourceKeys": [],
     "bookingUrl": "",
@@ -1689,7 +1689,7 @@ const PLACES = [
       "与林寨古村、热龙温泉同属和平，可组合成一日。"
     ],
     "hoursText": "出发前确认开放时间与安全提示",
-    "ticketText": "票价以当天公示为准（待核对）",
+    "ticketText": "免费开放（未开发天然溶洞，无售票处）",
     "phone": "",
     "sourceKeys": [],
     "bookingUrl": "",
@@ -1767,7 +1767,7 @@ const PLACES = [
       "与内莞风光、九连山同属连平，可组合成一日。"
     ],
     "hoursText": "出发前确认开放时间与安全提示",
-    "ticketText": "成人票约30元、儿童票约15元，以景区公示为准（待核对）",
+    "ticketText": "成人门票 25–30 元，1.2 米以下儿童免费（以现场公示为准）",
     "phone": "",
     "sourceKeys": [],
     "bookingUrl": "",
@@ -1962,7 +1962,7 @@ const PLACES = [
       "与巴伐利亚庄园、客天下同属源城，可按位置就近选择。"
     ],
     "hoursText": "出发前确认开放时间与预约要求",
-    "ticketText": "温泉票价以当天公示为准（待核对）",
+    "ticketText": "平日 98–118 元，周末 128–138 元（门市 168 元，以现场公示为准）",
     "phone": "",
     "sourceKeys": [],
     "bookingUrl": "",
@@ -2118,7 +2118,7 @@ const PLACES = [
       "位于龙川北部，可与七目嶂等北部山水组合。"
     ],
     "hoursText": "出发前确认开放时间与预约要求",
-    "ticketText": "温泉票价以当天公示为准（待核对）",
+    "ticketText": "散客泡池 30–68 元/人（镇内各温泉山庄独立定价，以现场公示为准）",
     "phone": "",
     "sourceKeys": [],
     "bookingUrl": "",
@@ -2313,7 +2313,7 @@ const PLACES = [
       "与阳明公园、林寨古村同属和平，可组合成一日。"
     ],
     "hoursText": "出发前确认开放时间与预约要求",
-    "ticketText": "温泉票价以当天公示为准（待核对）",
+    "ticketText": "成人 70–88 元，儿童 40–50 元（门市 158 元，以现场公示为准）",
     "phone": "",
     "sourceKeys": [],
     "bookingUrl": "",
@@ -2430,7 +2430,7 @@ const PLACES = [
       "与热龙温泉同属热水镇，可“漂+泡”同天。"
     ],
     "hoursText": "出发前确认开放时间与水情",
-    "ticketText": "漂流票价以当天公示为准（待核对）",
+    "ticketText": "全程漂流 80–138 元（门市 168 元，4–10 月开放，以现场公示为准）",
     "phone": "",
     "sourceKeys": [],
     "bookingUrl": "",
@@ -2936,8 +2936,8 @@ const PLACES = [
       "温泉开放时间与票价以当天公示为准。",
       "与叶园温泉、万绿湖同属东源，可按位置就近选择。"
     ],
-    "hoursText": "出发前确认开放时间与预约要求",
-    "ticketText": "温泉票价以当天公示为准（待核对）",
+    "hoursText": "停业改造中，出发前请确认是否恢复营业",
+    "ticketText": "停业改造中，暂不接待（原线上 68–88 元，以现场公示为准）",
     "phone": "",
     "sourceKeys": [],
     "bookingUrl": "",
