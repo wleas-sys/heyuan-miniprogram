@@ -34,7 +34,7 @@ Page(ui.page({
     if (typeof global.browseKeyword === 'string') { this.setData({ keyword: global.browseKeyword }); global.browseKeyword = null }
     this.refresh()
   },
-  onHide() { this.stopTimer() },
+  onHide() { this.stopTimer(); if (this.data.summaryOpen || this.data.summaryH) this.closeSummary() },
   onUnload() { this.stopTimer() },
   onReachBottom() { this.more() },
   stopTimer() {
