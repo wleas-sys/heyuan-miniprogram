@@ -13,10 +13,10 @@
     "pages/feedback/feedback"
   ],
   "window": {
-    "navigationBarBackgroundColor": "#F6F7F3",
+    "navigationBarBackgroundColor": "#F7F6F1",
     "navigationBarTitleText": "万绿智游",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#F6F7F3",
+    "backgroundColor": "#F7F6F1",
     "backgroundTextStyle": "dark"
   },
   "tabBar": {

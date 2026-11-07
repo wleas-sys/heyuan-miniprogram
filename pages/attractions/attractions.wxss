@@ -39,3 +39,22 @@
 .burst-dot.d4{--a:240deg}
 .burst-dot.d5{--a:300deg}
 @keyframes burst-out{0%{opacity:.9;transform:rotate(var(--a)) translateY(-8rpx) scale(.7)}100%{opacity:0;transform:rotate(var(--a)) translateY(-54rpx) scale(.25)}}
+
+/* ---- 质感层：列表与筛选 ---- */
+.browse-title{font-size:38rpx;font-weight:600;letter-spacing:-.8rpx}
+.browse-label{letter-spacing:2.4rpx}
+.saved-filter{border-color:#E1E6DA;background:var(--card);box-shadow:0 1rpx 2rpx rgba(24,45,34,.03)}
+.saved-filter.selected{background:#E8EFE1;border-color:#CBDCC2;box-shadow:none}
+.search-box{border-color:#E3E7DC;background:var(--card);box-shadow:var(--shadow-sm)}
+.category-tab{font-size:26rpx;letter-spacing:.3rpx}
+.category-tab.active{font-weight:600}
+.category-tab.active:after{height:4rpx;border-radius:4rpx;background:#2E5B45;left:24%;right:24%}
+.region-chip{background:#F3F5EF;border-color:#E7EADF;color:#6C7A6D}
+.region-chip.active{background:#E7EFE0;border-color:#CBDCC2;color:#2E4F3A;font-weight:600}
+.place-card{border-color:rgba(26,50,38,.07);border-radius:30rpx;box-shadow:var(--shadow-sm);background:var(--card)}
+.place-visual{height:336rpx}
+.place-body{padding:24rpx 28rpx 26rpx}
+.place-name{font-size:31rpx;letter-spacing:-.3rpx}
+.photo-region{font-size:22rpx;letter-spacing:.8rpx}
+.favorite-button{background:rgba(255,254,251,.92);box-shadow:0 2rpx 10rpx rgba(20,45,29,.14)}
+.more-button{border-color:rgba(26,50,38,.1);background:var(--card);box-shadow:var(--shadow-sm)}

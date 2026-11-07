@@ -16,3 +16,4 @@
 .credit-photo { width:132rpx; height:100rpx; flex-shrink:0; border-radius:12rpx; background:#EAF0E7; }
 .credit-note { margin-top:14rpx; line-height:1.85; }
 .source-links { display:flex; flex-wrap:wrap; gap:26rpx; }
+.about-tags{display:flex;flex-wrap:wrap;gap:10rpx}

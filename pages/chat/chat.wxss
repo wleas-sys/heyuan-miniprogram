@@ -142,3 +142,16 @@
 .composer-send { transition: transform .14s ease, opacity .18s ease, background-color .2s ease; }
 .composer-send[disabled] { background: #C3D1C4; color: #F4F7F1; opacity: 1; }
 .send-pressed { transform: scale(.96); opacity: .9; }
+
+/* ---- 质感层：气泡、卡片、输入区 ---- */
+.bubble{background:var(--card);border-color:rgba(26,50,38,.07);box-shadow:var(--shadow-sm);border-radius:10rpx 26rpx 26rpx 26rpx}
+.msg.user .bubble{background:linear-gradient(180deg,#1F4C3E,#143A2F);border-color:transparent;box-shadow:0 4rpx 14rpx rgba(20,58,47,.16)}
+.avatar{background:linear-gradient(160deg,#245144,#143A2F);box-shadow:0 3rpx 8rpx rgba(20,58,47,.18)}
+.plan-card{background:#FBFCF7;border-color:rgba(26,50,38,.06);border-radius:22rpx}
+.plan-use{background:linear-gradient(180deg,#1F4C3E,#143A2F);box-shadow:0 6rpx 16rpx rgba(20,58,47,.16);border-radius:16rpx}
+.chip{background:var(--card);border-color:#E3E7DC;box-shadow:0 1rpx 2rpx rgba(24,45,34,.03)}
+.composer{background:rgba(255,254,251,.96);backdrop-filter:blur(16px);border-top-color:var(--hairline)}
+.composer-input{background:#F2F4EE;border:1rpx solid rgba(26,50,38,.05)}
+.composer-send{background:linear-gradient(180deg,#1F4C3E,#143A2F);box-shadow:0 4rpx 12rpx rgba(20,58,47,.18)}
+.chat-top{background:rgba(247,246,241,.96);border-bottom-color:var(--hairline)}
+.chat-reset{border-color:#E1E6DA;background:var(--card);box-shadow:0 1rpx 2rpx rgba(24,45,34,.03)}

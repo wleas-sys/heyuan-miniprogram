@@ -26,3 +26,27 @@
 
 /* 搜索框内一键清空，少删几个字 */
 .home-search .clear-keyword{width:56rpx;height:56rpx;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#F1F4EE;color:#8B958D;font-size:34rpx;line-height:1}
+
+/* ---- 质感层：首屏与卡片，只调材质不调结构 ---- */
+.home-hero{border-radius:32rpx;border-color:rgba(26,50,38,.06);box-shadow:var(--shadow-md)}
+.hero-shade{background:linear-gradient(180deg,rgba(10,38,29,.24),rgba(8,32,24,0) 34%,rgba(8,32,24,.16) 62%,rgba(8,32,24,.72))}
+.hero-location{background:rgba(18,48,39,.3);border-color:rgba(255,255,255,.24);padding:9rpx 15rpx;letter-spacing:.4rpx}
+.hero-title{font-size:44rpx;letter-spacing:2.4rpx;text-shadow:0 2rpx 14rpx rgba(0,0,0,.22)}
+.hero-planner{padding:28rpx 26rpx}
+.hero-planner-title{font-size:29rpx;letter-spacing:.2rpx}
+.planner-hero-button{border-radius:20rpx;background:linear-gradient(180deg,#1F4C3E,#143A2F);box-shadow:0 2rpx 4rpx rgba(20,58,47,.16),0 10rpx 22rpx rgba(20,58,47,.18);letter-spacing:.6rpx}
+.chat-entry{border-color:rgba(26,50,38,.07);background:linear-gradient(135deg,#F5F8F0,#E9F0E3);box-shadow:var(--shadow-sm);border-radius:26rpx}
+.chat-entry-avatar{background:linear-gradient(160deg,#245144,#143A2F);box-shadow:0 4rpx 10rpx rgba(20,58,47,.2)}
+.resume-card{border-color:rgba(26,50,38,.07);background:linear-gradient(135deg,#F1F5EB,#E8EFE2);box-shadow:var(--shadow-sm);border-radius:26rpx}
+.home-search{border-color:#E3E7DC;background:var(--card);box-shadow:var(--shadow-sm)}
+.section-overline{font-size:20rpx;letter-spacing:2.6rpx;color:#7C897E;margin-bottom:8rpx}
+.route-card{border-bottom-color:#EBEEE4}
+.route-photo{border-radius:18rpx}
+.route-name{font-size:29rpx;letter-spacing:-.2rpx}
+.route-meta{letter-spacing:.4rpx}
+.destination-card{border-color:rgba(26,50,38,.07);border-radius:26rpx;box-shadow:var(--shadow-sm);background:var(--card)}
+.destination-visual{height:236rpx}
+.destination-info{padding:18rpx 20rpx 22rpx}
+.destination-name{font-size:29rpx;font-weight:600;letter-spacing:-.2rpx}
+.destination-category{letter-spacing:.6rpx}
+.food-entry{border-color:var(--hairline);margin-top:42rpx}

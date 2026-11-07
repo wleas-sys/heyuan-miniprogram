@@ -1,7 +1,7 @@
 {
   "navigationBarTitleText": "和智游聊聊",
-  "navigationBarBackgroundColor": "#F6F7F3",
+  "navigationBarBackgroundColor": "#F7F6F1",
   "navigationBarTextStyle": "black",
-  "backgroundColor": "#F6F7F3",
+  "backgroundColor": "#F7F6F1",
   "usingComponents": {}
 }

@@ -23,3 +23,8 @@
 .model-delta{font-size:22rpx;color:#2F6B49;font-variant-numeric:tabular-nums;flex-shrink:0}
 .model-reason.is-down .model-delta{color:#9D5142}
 .model-footnote{margin-top:14rpx;padding:0 4rpx;font-size:20rpx;line-height:1.8;color:#8A978C}
+
+/* ---- 质感层：规划表单 ---- */
+.form-card{background:var(--card);border-color:var(--hairline);box-shadow:var(--shadow-sm);border-radius:30rpx}
+.result-card{background:var(--card);border-color:var(--hairline);box-shadow:var(--shadow-sm);border-radius:28rpx}
+.form-section{border-top-color:var(--hairline)}
