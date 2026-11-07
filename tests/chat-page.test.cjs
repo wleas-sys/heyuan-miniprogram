@@ -2,6 +2,34 @@ const test = require('node:test')
 const assert = require('node:assert/strict')
 const { createHarness } = require('./harness.cjs')
 
+test('点「发送」按钮也能发出去（tap 事件没有 detail.value）', () => {
+  const h = createHarness()
+  const page = h.load('pages/chat/chat.js')
+  page.onLoad()
+  page.onInput({ detail: { value: '两天带爸妈看温泉' } })
+  page.submit({ detail: {} })          // 模拟按钮 tap：没有 value
+  assert.equal(page.data.messages.length, 3, '应发出用户消息并收到回复')
+  assert.equal(page.data.messages[1].role, 'user')
+  assert.equal(page.data.messages[1].text, '两天带爸妈看温泉')
+  assert.equal(page.data.input, '', '发出后应清空输入框')
+})
+
+test('输入框回车（confirm 带 value）也能发', () => {
+  const h = createHarness()
+  const page = h.load('pages/chat/chat.js')
+  page.onLoad()
+  page.submit({ detail: { value: '三日游，想看山水' } })
+  assert.equal(page.data.messages.at(-2).text, '三日游，想看山水')
+})
+
+test('发送后 busy 必须回到 false，否则按钮会一直置灰', () => {
+  const h = createHarness()
+  const page = h.load('pages/chat/chat.js')
+  page.onLoad()
+  page.send('两天')
+  assert.equal(page.data.busy, false)
+})
+
 test('打开对话页先有一句 AI 开场和可点的例子，不是空白输入框', () => {
   const h = createHarness()
   const page = h.load('pages/chat/chat.js')

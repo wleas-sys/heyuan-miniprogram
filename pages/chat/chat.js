@@ -30,7 +30,13 @@ Page(ui.page({
 
   tapChip(e) { this.send(e.currentTarget.dataset.text) },
 
-  submit(e) { this.send(e.detail.value) },
+  // 输入框回车（confirm）会带 detail.value；但点「发送」按钮的 tap 事件没有 value，
+  // 必须回落到输入框当前内容，否则按钮点了没反应。
+  submit(e) {
+    const detail = e && e.detail
+    const typed = detail && typeof detail.value === 'string' ? detail.value : ''
+    this.send(typed || this.data.input)
+  },
 
   // 一次输入 = 解析条件 + 回一句 + （条件够时）直接给方案
   send(raw) {
@@ -38,27 +44,32 @@ Page(ui.page({
     if (!text || this.data.busy || this.data.adopting) return
     if (ui.singlePage()) return ui.toast('请先点击底部"前往小程序"')
 
-    const patch = engine.parse(text)
-    const form = Object.assign({}, this._form, patch)
-    this._form = form
+    try {
+      const patch = engine.parse(text)
+      const form = Object.assign({}, this._form, patch)
+      this._form = form
 
-    const userMsg = { id: 'm' + (++this._seq), role: 'user', text }
-    const messages = this.data.messages.concat([userMsg])
-    this.setData({ messages, input: '', busy: true, scrollInto: userMsg.id })
+      const userMsg = { id: 'm' + (++this._seq), role: 'user', text }
+      const messages = this.data.messages.concat([userMsg])
+      this.setData({ messages, input: '', busy: true, scrollInto: userMsg.id })
 
-    const reply = engine.reply(form, patch, 0)
-    let cards = []
-    if (form.days) {
-      try {
-        const candidates = planning.recommend(Object.assign({}, form, { history: events.counts() })).slice(0, 3)
-        cards = candidates.map((item, index) => this.toCard(item, index))
-        Object.keys(this._candidates).forEach(key => delete this._candidates[key])
-        candidates.forEach(item => { this._candidates[item.id] = item })
-      } catch (e) { cards = [] }
-      const said = engine.reply(form, patch, cards.length)
-      this.pushAi(said.text, said.chips, cards)
-    } else {
-      this.pushAi(reply.text, reply.chips, [])
+      const reply = engine.reply(form, patch, 0)
+      let cards = []
+      if (form.days) {
+        try {
+          const candidates = planning.recommend(Object.assign({}, form, { history: events.counts() })).slice(0, 3)
+          cards = candidates.map((item, index) => this.toCard(item, index))
+          Object.keys(this._candidates).forEach(key => delete this._candidates[key])
+          candidates.forEach(item => { this._candidates[item.id] = item })
+        } catch (e) { cards = [] }
+        const said = engine.reply(form, patch, cards.length)
+        this.pushAi(said.text, said.chips, cards)
+      } else {
+        this.pushAi(reply.text, reply.chips, [])
+      }
+    } finally {
+      // 任何异常都不能把 busy 卡在 true，否则发送按钮会一直置灰
+      if (this.data.busy) this.setData({ busy: false })
     }
   },
 
