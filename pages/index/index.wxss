@@ -23,3 +23,20 @@
 .chat-entry-title{font-size:28rpx;font-weight:650;color:#22402F}
 .chat-entry-note{font-size:22rpx;color:#6C8071;margin-top:4rpx}
 .chat-entry-arrow{font-size:30rpx;color:#43654C;flex-shrink:0}
+
+/* ---- 版面压缩：减少首屏占高，功能不删 ---- */
+.hero-visual{height:300rpx}
+.hero-planner{flex-direction:row;align-items:center;gap:12rpx;padding:18rpx 22rpx}
+.hero-actions{display:flex;gap:12rpx}
+.hero-planner .planner-hero-button{flex:1;justify-content:center}
+.planner-chat-button{flex:0 0 auto;display:flex;align-items:center;justify-content:center;min-height:44px;padding:20rpx 26rpx;border-radius:18rpx;background:#EAF1E6;color:#2B4A36;font-size:26rpx;font-weight:600;border:1rpx solid #D6E2D0}
+.home .section{margin-top:30rpx}
+.home .section-head{margin-bottom:16rpx}
+.destination-visual{height:176rpx}
+.destination-info{padding:13rpx 15rpx 15rpx}
+.destination-teaser{margin-top:4rpx;min-height:58rpx;-webkit-line-clamp:2}
+.route-card{padding:18rpx 0}
+.route-photo{width:120rpx;height:130rpx}
+.route-stack{padding:0 18rpx}
+.scene-row{padding:18rpx 0 4rpx}
+.food-entry{padding:22rpx 4rpx;margin-top:28rpx}

@@ -11,7 +11,12 @@ Component({
   },
   methods: {
     go(e) {
-      wx.switchTab({ url: e.currentTarget.dataset.path })
+      const path = e.currentTarget.dataset.path
+      const current = this.data.list[this.data.selected]
+      if (current && current.path === path) return
+      // 切换页签给一点触感，点错了也能立刻感知
+      try { if (typeof wx.vibrateShort === 'function') wx.vibrateShort({ type: 'light', fail() {} }) } catch (err) {}
+      wx.switchTab({ url: path, fail() {} })
     }
   }
 })

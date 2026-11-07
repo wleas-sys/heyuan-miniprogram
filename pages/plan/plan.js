@@ -68,7 +68,8 @@ Page(ui.page({
     checksAvailable: true,
     failedPhotos: {},
     saved: false,
-    checksOpen: false, expandedStop: ''
+    checksOpen: false, expandedStop: '',
+    undoOpen: false, undoText: '', undoPlan: null, flashId: ''
   },
 
   onShow() {
@@ -87,6 +88,17 @@ Page(ui.page({
 
   onHide() {
     this.closePicker()
+    this.clearTimers()
+    if (this.data.undoOpen) this.setData({ undoOpen: false, undoPlan: null })
+  },
+
+  onUnload() { this.clearTimers() },
+
+  clearTimers() {
+    if (this._undoTimer && typeof clearTimeout === 'function') clearTimeout(this._undoTimer)
+    if (this._flashTimer && typeof clearTimeout === 'function') clearTimeout(this._flashTimer)
+    this._undoTimer = null
+    this._flashTimer = null
   },
 
   retryDraft() { this.onShow() },
@@ -366,17 +378,29 @@ Page(ui.page({
       if (this.commit(next)) {
         this.setData({ activeDay: day })
         this.closePicker()
+        ui.haptic()
+        this.flashStop(key)
       }
     } catch (e) {
       ui.fail(e)
     }
   },
 
+  // 新加入的一站先亮一下，再把页面带过去，避免「点了没反应」的错觉
+  flashStop(id) {
+    if (this._flashTimer && typeof clearTimeout === 'function') clearTimeout(this._flashTimer)
+    this.setData({ flashId: id })
+    if (typeof setTimeout !== 'function') return
+    this._flashTimer = setTimeout(() => { this._flashTimer = null; this.setData({ flashId: '' }) }, 1200)
+    // 等新节点渲染出来再定位，定位失败就保持当前位置
+    if (typeof wx !== 'undefined' && typeof wx.pageScrollTo === 'function') setTimeout(() => wx.pageScrollTo({ selector: '#stop-' + id, offsetTop: -120, duration: 260, fail() {} }), 80)
+  },
+
   move(e) {
     if (guard()) return
     const d = e.currentTarget.dataset
     try {
-      this.commit(planner.moveStop(this.data.plan, Number(d.day), Number(d.index), Number(d.delta)))
+      if (this.commit(planner.moveStop(this.data.plan, Number(d.day), Number(d.index), Number(d.delta)))) ui.haptic()
     } catch (e) {
       ui.fail(e)
     }
@@ -405,19 +429,42 @@ Page(ui.page({
     })
   },
 
+  // 移除不再弹确认框，改成「先移除、再给 5 秒撤销」，少一次打断
   remove(e) {
+    if (guard()) return
     const d = e.currentTarget.dataset, day = Number(d.day), index = Number(d.index)
     const placeId = this.data.plan.days[day] && this.data.plan.days[day][index]
-    wx.showModal({
-      title: '移除地点？',
-      content: '只从当前草稿行程中移除，之后仍可随时重新加入。',
-      confirmText: '移除',
-      confirmColor: '#A04D38',
-      success: r => {
-        if (!r.confirm) return
-        if (this.commit(planner.removeStop(this.data.plan, day, index)) && placeId) events.record('remove', placeId)
-      }
-    })
+    if (!placeId) return
+    let snapshot
+    try { snapshot = JSON.parse(JSON.stringify(this.data.plan)) } catch (err) { return ui.fail(err) }
+    const place = getPlace(placeId)
+    if (!this.commit(planner.removeStop(this.data.plan, day, index))) return
+    events.record('remove', placeId)
+    ui.haptic()
+    this.showUndo('已移除「' + (place ? (place.shortName || place.name) : '这一站') + '」', snapshot)
+  },
+
+  showUndo(text, snapshot) {
+    this.setData({ undoOpen: true, undoText: text, undoPlan: snapshot })
+    if (this._undoTimer && typeof clearTimeout === 'function') clearTimeout(this._undoTimer)
+    if (typeof setTimeout !== 'function') return
+    this._undoTimer = setTimeout(() => {
+      this._undoTimer = null
+      this.setData({ undoOpen: false, undoPlan: null })
+    }, 5000)
+  },
+
+  undoRemove() {
+    if (!this.data.undoPlan) return
+    const plan = this.data.undoPlan
+    this.clearTimers()
+    this.setData({ undoOpen: false, undoPlan: null })
+    if (this.commit(plan)) { ui.haptic(); ui.toast('已恢复刚才的地点') }
+  },
+
+  dismissUndo() {
+    this.clearTimers()
+    this.setData({ undoOpen: false, undoPlan: null })
   },
 
   preview() {
@@ -430,6 +477,7 @@ Page(ui.page({
     try {
       storage.savePlan(this.data.plan)
       this.setData({ saved: true })
+      ui.haptic('medium')
       ui.toast('行程已保存到“我的”')
     } catch (e) {
       ui.fail(e)

@@ -35,3 +35,14 @@
 
 .active-day-label{font-size:24rpx;color:#748279;margin:4rpx 0 18rpx}.ticket-reference-note{font-size:21rpx;line-height:1.7;margin-top:6rpx}
 .draft-recovery .notice{margin:24rpx 0 18rpx}.draft-recovery .small{line-height:1.9}.draft-recovery-actions{display:flex;flex-direction:column;align-items:stretch;gap:14rpx;margin-top:28rpx}.draft-recovery-actions button{width:100%;text-align:center}.draft-recovery-actions .link{padding:20rpx 0;font-size:24rpx}
+
+/* 交互补充：弹层滑入、新站点高亮 */
+.sheet-mask{animation:mask-in .2s ease-out both}
+.sheet{animation:sheet-up .26s cubic-bezier(.22,.9,.3,1) both}
+@keyframes mask-in{from{background:rgba(13,34,25,0)}to{background:rgba(13,34,25,.48)}}
+@keyframes sheet-up{from{transform:translateY(64rpx);opacity:.5}to{transform:translateY(0);opacity:1}}
+@keyframes stop-pop{0%{box-shadow:0 0 0 0 rgba(96,142,101,.55)}55%{box-shadow:0 0 0 6rpx rgba(96,142,101,.28)}100%{box-shadow:0 0 0 0 rgba(96,142,101,0)}}
+.stop.just-added{animation:stop-pop 1.1s ease-out}
+/* 站点调整区展开时淡入，避免内容突然撑开 */
+.stop-timing,.inside-break{animation:fold-in .2s ease-out both}
+@keyframes fold-in{from{opacity:0;transform:translateY(-6rpx)}to{opacity:1;transform:none}}

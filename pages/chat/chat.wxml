@@ -1,5 +1,9 @@
 <view class="chat-page">
   <view wx:if="{{singlePage}}" class="preview-notice">正在预览。生成与采用方案，请点击底部「前往小程序」。</view>
+  <view class="chat-top">
+    <view class="chat-top-main"><view class="chat-top-dot"></view><text class="chat-top-text">{{summaryText || '说一句就能开始，条件随时能改'}}</text></view>
+    <button class="chat-reset" bindtap="restart" hover-class="pressed" aria-label="清空对话重新开始">重来</button>
+  </view>
   <scroll-view class="chat-scroll" scroll-y scroll-into-view="{{scrollInto}}" scroll-with-animation enhanced show-scrollbar="{{false}}">
     <view class="chat-inner">
       <view wx:for="{{messages}}" wx:key="id" id="{{item.id}}" class="msg {{item.role}}">
@@ -40,6 +44,6 @@
 
   <view class="composer">
     <input class="composer-input" value="{{input}}" bindinput="onInput" bindconfirm="submit" confirm-type="send" maxlength="60" placeholder="说一句，比如「两天带爸妈看温泉」" placeholder-class="composer-ph" aria-label="说说你的出游想法"/>
-    <button class="composer-send" bindtap="submit" disabled="{{busy}}" aria-label="发送">发送</button>
+    <button class="composer-send" bindtap="submit" disabled="{{busy || !canSend}}" hover-class="send-pressed" aria-label="发送">发送</button>
   </view>
 </view>

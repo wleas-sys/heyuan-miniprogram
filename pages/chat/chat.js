@@ -6,10 +6,21 @@ const engine = require('../../utils/chat-engine')
 
 // days 用 0 表示"还不知道"，区别于用户明确选的 1 天。
 const DEFAULTS = { days: 0, date: '', mode: 'drive', pace: 'relaxed', interest: '全部', region: '全部', crowd: 'friends' }
+const MODE_LABEL = { drive: '自驾', transit: '公交', walk: '步行' }
+// 顶部一行「AI 现在理解成什么」，让人知道说的话有没有被听进去
+function summaryOf(form) {
+  if (!form || !form.days) return ''
+  const parts = [form.days + ' 天']
+  if (MODE_LABEL[form.mode]) parts.push(MODE_LABEL[form.mode])
+  if (form.interest && form.interest !== '全部') parts.push(form.interest)
+  parts.push(form.region && form.region !== '全部' ? form.region : '河源全域')
+  return parts.join(' · ')
+}
 
 Page(ui.page({
   data: {
-    messages: [], chips: [], input: '', busy: false, adopting: false, scrollInto: '', form: DEFAULTS
+    messages: [], chips: [], input: '', busy: false, adopting: false, scrollInto: '', form: DEFAULTS,
+    canSend: false, summaryText: ''
   },
 
   onLoad() {
@@ -21,12 +32,17 @@ Page(ui.page({
       form: Object.assign({}, DEFAULTS),
       messages: [{ id: 'm1', role: 'ai', text: greeting.text }],
       chips: greeting.chips,
-      scrollInto: 'm1'
+      scrollInto: 'm1',
+      canSend: false,
+      summaryText: ''
     })
     ui.enableShare()
   },
 
-  onInput(e) { this.setData({ input: e.detail.value }) },
+  onInput(e) {
+    const value = e.detail.value || ''
+    this.setData({ input: value, canSend: !!value.trim() })
+  },
 
   tapChip(e) { this.send(e.currentTarget.dataset.text) },
 
@@ -51,7 +67,8 @@ Page(ui.page({
 
       const userMsg = { id: 'm' + (++this._seq), role: 'user', text }
       const messages = this.data.messages.concat([userMsg])
-      this.setData({ messages, input: '', busy: true, scrollInto: userMsg.id })
+      ui.haptic()
+      this.setData({ messages, input: '', canSend: false, busy: true, scrollInto: userMsg.id })
 
       const reply = engine.reply(form, patch, 0)
       let cards = []
@@ -76,7 +93,35 @@ Page(ui.page({
   pushAi(text, chips, cards) {
     const id = 'm' + (++this._seq)
     const messages = this.data.messages.concat([{ id, role: 'ai', text, chips: chips || [], cards: cards || [] }])
-    this.setData({ messages, chips: chips || [], busy: false, scrollInto: id, form: Object.assign({}, this._form) })
+    this.setData({ messages, chips: chips || [], busy: false, scrollInto: id, form: Object.assign({}, this._form), summaryText: summaryOf(this._form) })
+  },
+
+  // 聊长了想重开：清屏但不动已经采用的草稿
+  restart() {
+    if (this.data.busy || this.data.adopting) return ui.toast('正在整理方案，请稍等一下')
+    if (ui.singlePage()) return ui.toast('请先点击底部"前往小程序"')
+    if (this.data.messages.length <= 1) return ui.toast('还没开始，直接说一句就行')
+    wx.showModal({
+      title: '重新开始？',
+      content: '会清空当前对话，重新从一句描述开始；已经采用的行程草稿不受影响。',
+      confirmText: '重新开始',
+      cancelText: '继续聊',
+      success: r => {
+        if (!r.confirm) return
+        this._seq = 1
+        this._candidates = {}
+        this._form = Object.assign({}, DEFAULTS)
+        const greeting = engine.greeting()
+        this.setData({
+          form: Object.assign({}, DEFAULTS),
+          messages: [{ id: 'm1', role: 'ai', text: greeting.text }],
+          chips: greeting.chips,
+          input: '', canSend: false, busy: false, adopting: false,
+          scrollInto: 'm1', summaryText: ''
+        })
+        ui.haptic()
+      }
+    })
   },
 
   toCard(item, index) {
@@ -115,6 +160,7 @@ Page(ui.page({
         const adopted = [].concat.apply([], candidate.plan.days)
         adopted.forEach(id => events.record('adopt', id))
         this.setData({ adopting: false })
+        ui.haptic('medium')
         ui.editor('方案已采用，可继续调整')
       } catch (error) { this.setData({ adopting: false }); ui.fail(error) }
     }

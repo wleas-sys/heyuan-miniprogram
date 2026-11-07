@@ -13,7 +13,7 @@ Page(ui.page({
     scenes: [{ category: '人文', title: '古城与看展', note: '走进河源的故事', icon: 'culture' }, { category: '山水', title: '湖山与户外', note: '留一天给山水', icon: 'landscape' }, { category: '温泉', title: '温泉与休息', note: '放慢周末的脚步', icon: 'spring' }]
   },
   onShow() { ui.tab.call(this, 0); const draft = storage.getDraft(); this.setData({ draftCount: draft.days.reduce((n, d) => n + d.length, 0), draftDays: draft.days.length, draftTitle: draft.title }) },
-  toggleRoutes() { const expanded = !this.data.routesExpanded; this.setData({ routesExpanded: expanded, routes: (expanded ? ROUTES : ROUTES.slice(0, 3)).map(r => Object.assign({}, r, { stopCount: r.days.reduce((n, d) => n + d.length, 0) })) }) },
+  toggleRoutes() { const expanded = !this.data.routesExpanded; ui.haptic(); this.setData({ routesExpanded: expanded, routes: (expanded ? ROUTES : ROUTES.slice(0, 3)).map(r => Object.assign({}, r, { stopCount: r.days.reduce((n, d) => n + d.length, 0) })) }) },
   feedback() { if (ui.singlePage()) return ui.toast('请先点击底部“前往小程序”'); wx.navigateTo({ url: '/pages/feedback/feedback' }) },
   input(e) { this.setData({ keyword: e.detail.value }) },
   search() {

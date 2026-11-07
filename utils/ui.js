@@ -2,6 +2,18 @@ const { getPlace } = require('./data')
 const galleryPackages = require('./gallery-packages')
 function toast(title) { wx.showToast({ title, icon: 'none' }) }
 function fail(error) { toast(error && error.message ? error.message : '操作未完成，请重试') }
+// 轻触反馈：模拟器、部分安卓机与分享单页没有该能力，静默跳过即可。
+function haptic(type) {
+  try {
+    if (typeof wx !== 'undefined' && typeof wx.vibrateShort === 'function') wx.vibrateShort({ type: type || 'light', fail() {} })
+  } catch (e) {}
+}
+// 筛选条件变化后把页面拉回列表起点，避免停在空白的滚动位置。
+function scrollTop(value) {
+  try {
+    if (typeof wx !== 'undefined' && typeof wx.pageScrollTo === 'function') wx.pageScrollTo({ scrollTop: typeof value === 'number' ? value : 0, duration: 260, fail() {} })
+  } catch (e) {}
+}
 function singlePage() { try { const options = typeof wx.getEnterOptionsSync === 'function' ? wx.getEnterOptionsSync() : typeof wx.getLaunchOptionsSync === 'function' ? wx.getLaunchOptionsSync() : {}; return options.scene === 1154 } catch (e) { return false } }
 // Timeline preview can read content, but editing/navigation need the full mini program.
 function page(config) {
@@ -53,4 +65,4 @@ function editor(message) {
   wx.switchTab({ url: '/pages/plan/plan', fail: () => toast('草稿已保留，请从底部“行程”打开') })
 }
 function home() { wx.switchTab({ url: '/pages/index/index' }) }
-module.exports = { toast, fail, singlePage, page, enableShare, tab, homeShare, homeTimeline, copy, previewPhotos, navigate, formatDate, detailPackage, detailUrl, detail, home, editor }
+module.exports = { toast, fail, haptic, scrollTop, singlePage, page, enableShare, tab, homeShare, homeTimeline, copy, previewPhotos, navigate, formatDate, detailPackage, detailUrl, detail, home, editor }
