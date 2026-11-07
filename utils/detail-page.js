@@ -97,13 +97,13 @@ module.exports = function createDetailPage(packageRoot) { return ui.page({
   },
   feedback() { if (!ui.singlePage() && this.data.place) wx.navigateTo({ url: '/pages/feedback/feedback?place=' + this.data.place.id }) },
   toggleSources() { this.setData({ sourcesOpen: !this.data.sourcesOpen }) },
-  favorite() { if (!this.data.place) return; try { storage.toggleFavorite(this.data.place.id); this.refresh(); events.record(this.data.saved ? 'favorite' : 'unfavorite', this.data.place.id); ui.toast(this.data.saved ? '已收藏这个地点' : '已取消收藏') } catch (e) { ui.fail(e) } },
+  favorite() { if (!this.data.place) return; try { storage.toggleFavorite(this.data.place.id); this.refresh(); ui.haptic(); events.record(this.data.saved ? 'favorite' : 'unfavorite', this.data.place.id); ui.toast(this.data.saved ? '已收藏这个地点' : '已取消收藏') } catch (e) { ui.fail(e) } },
   add() {
     if (!this.data.place) return
     if (this.data.added) return ui.editor()
     let draft
     try { draft = storage.getDraft(true) } catch (e) { return ui.fail(e) }
-    const write = day => { try { storage.setDraft(planner.addStop(draft, this.data.place.id, day)); events.record('add', this.data.place.id); this.refresh(); ui.toast('已加入第 ' + (day + 1) + ' 天') } catch (e) { ui.fail(e) } }
+    const write = day => { try { storage.setDraft(planner.addStop(draft, this.data.place.id, day)); events.record('add', this.data.place.id); this.refresh(); ui.haptic('medium'); ui.toast('已加入第 ' + (day + 1) + ' 天') } catch (e) { ui.fail(e) } }
     if (draft.days.length === 1) write(0)
     else wx.showActionSheet({ itemList: draft.days.map((d, i) => '加入第 ' + (i + 1) + ' 天'), success: r => write(r.tapIndex) })
   },

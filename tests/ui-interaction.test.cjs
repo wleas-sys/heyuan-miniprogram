@@ -1,0 +1,105 @@
+const test = require('node:test')
+const assert = require('node:assert/strict')
+const { createHarness } = require('./harness.cjs')
+
+test('景点页首屏只渲染 24 条，滚到底再追加，总数仍是全量', () => {
+  const h = createHarness()
+  const total = h.module('utils/data.js').PLACES.length
+  const page = h.page('attractions')
+  assert.equal(page.data.total, total, '筛选结果总数要显示全量')
+  assert.equal(page.data.list.length, Math.min(24, total), '首屏只给一页，避免一次渲染全部卡片')
+  page.more()
+  assert.equal(page.data.list.length, Math.min(48, total))
+  for (let i = 0; i < 20; i++) page.more()
+  assert.equal(page.data.list.length, total, '继续加载不能超过总数')
+  assert.equal(new Set(page.data.list.map(item => item.id)).size, total, '分页不能出现重复地点')
+})
+
+test('切换分类会重置分页，不会停在上一页的滚动长度', () => {
+  const h = createHarness()
+  const page = h.page('attractions')
+  page.more()
+  assert.ok(page.data.list.length > 24)
+  page.category({ currentTarget: { dataset: { value: '温泉' } } })
+  assert.ok(page.data.list.length <= 24, '换分类后应回到第一页')
+  assert.equal(page.data.total, page.data.list.length, '温泉结果不足一页时应一次显示完')
+  assert.equal(page.data.catInto, 'cat-' + page.data.categories.indexOf('温泉'), '选中的分类要滚进可视区')
+})
+
+test('搜索会同时过滤分类、地区与收藏，重置后回到全量', () => {
+  const h = createHarness()
+  const page = h.page('attractions')
+  page.category({ currentTarget: { dataset: { value: '温泉' } } })
+  const warm = page.data.total
+  page.search({ detail: { value: '康泉' } })
+  assert.equal(page.data.keyword, '康泉')
+  assert.ok(page.data.total <= warm, '搜索应在当前分类内收窄')
+  page.clear()
+  assert.equal(page.data.keyword, '')
+  assert.equal(page.data.category, '全部')
+  assert.equal(page.data.total, h.module('utils/data.js').PLACES.length)
+})
+
+test('移除站点不再弹确认框，改成可撤销，撤销后草稿原样恢复', () => {
+  const h = createHarness()
+  const storage = h.module('utils/storage.js')
+  const planner = h.module('utils/planner.js')
+  storage.setDraft(planner.fromRoute('city'))
+  const page = h.page('plan')
+  const day = page.data.plan.days[0].slice()
+  assert.ok(day.length >= 2)
+
+  page.remove({ currentTarget: { dataset: { day: 0, index: 0 } } })
+  assert.equal(h.count('showModal'), 0, '移除不该再打断一次')
+  assert.equal(page.data.plan.days[0].length, day.length - 1)
+  assert.equal(page.data.undoOpen, true)
+  assert.match(page.data.undoText, /已移除/)
+  assert.deepEqual(storage.getDraft().days[0], page.data.plan.days[0], '移除应立即写入草稿')
+
+  page.undoRemove()
+  assert.deepEqual(page.data.plan.days[0], day, '撤销要恢复到移除前的位置')
+  assert.deepEqual(storage.getDraft().days[0], day, '撤销也要写回草稿')
+  assert.equal(page.data.undoOpen, false)
+})
+
+test('对话页没输入时发送按钮置灰，输入后可用，发出后复位', () => {
+  const h = createHarness()
+  const page = h.load('pages/chat/chat.js')
+  page.onLoad()
+  assert.equal(page.data.canSend, false, '空白输入不该能点发送')
+  page.onInput({ detail: { value: '   ' } })
+  assert.equal(page.data.canSend, false, '只输入空格不算内容')
+  page.onInput({ detail: { value: '两天带爸妈' } })
+  assert.equal(page.data.canSend, true)
+  page.submit({ detail: {} })
+  assert.equal(page.data.canSend, false)
+  assert.equal(page.data.input, '')
+})
+
+test('对话页顶栏显示 AI 当前理解的条件，重开后回到开场', () => {
+  const h = createHarness()
+  const page = h.load('pages/chat/chat.js')
+  page.onLoad()
+  assert.equal(page.data.summaryText, '')
+  page.send('两天，带爸妈看温泉')
+  assert.match(page.data.summaryText, /2 天/)
+  assert.match(page.data.summaryText, /温泉/)
+
+  h.replies.push({ confirm: true })
+  page.restart()
+  assert.equal(page.data.messages.length, 1, '重开后只保留一句开场')
+  assert.equal(page.data.messages[0].role, 'ai')
+  assert.equal(page.data.summaryText, '')
+  assert.equal(page.data.canSend, false)
+})
+
+test('取消重开不会清空当前对话', () => {
+  const h = createHarness()
+  const page = h.load('pages/chat/chat.js')
+  page.onLoad()
+  page.send('两天')
+  const before = page.data.messages.length
+  h.replies.push({ confirm: false })
+  page.restart()
+  assert.equal(page.data.messages.length, before)
+})

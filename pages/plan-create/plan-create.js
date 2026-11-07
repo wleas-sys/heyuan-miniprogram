@@ -22,6 +22,7 @@ Page(ui.page({
     if (signature(form) === signature(this.data.form)) return
     const changed = this.data.generated || this.data.changed
     this._candidates = []; this._generation = ''
+    ui.haptic()
     this.setData({ form, results: [], generated: false, changed, error: '', selectedSummary: '', regionIndex: Math.max(0, this.data.regions.indexOf(form.region)) })
   },
   chooseDays(e) { const days = Number(e.currentTarget.dataset.value); if ([1, 2, 3, 4, 5].includes(days)) this.update({ days }) },
@@ -50,6 +51,7 @@ Page(ui.page({
         selectedSummary: options.days + ' 天 · ' + (mode ? mode.label : '') + ' · ' + (pace ? pace.label : '') + ' · ' + (options.region === '全部' ? '河源全域' : options.region)
       })
       if (typeof wx.pageScrollTo === 'function') wx.pageScrollTo({ selector: '#recommendations', duration: 250, fail() {} })
+      ui.haptic(candidates.length ? 'light' : 'medium')
     } catch (e) { this._candidates = []; this._generation = ''; this.setData({ results: [], generated: false, changed: false, error: e.message || '暂时无法生成方案，请重试' }) }
   },
   relax() { if (!this.guard()) return; const patch = { interest: '全部', region: '全部' }; if (this.data.form.mode === 'walk' && this.data.form.days > 1) patch.days = 1; this.update(patch); this.generate() },
@@ -67,6 +69,7 @@ Page(ui.page({
         const adopted = [].concat.apply([], candidate.plan.days)
         adopted.forEach(id => events.record('adopt', id))
         this.setData({ adopting: false })
+        ui.haptic('medium')
         ui.editor('方案已采用，可继续调整')
       } catch (error) { this.setData({ adopting: false }); ui.fail(error) }
     }

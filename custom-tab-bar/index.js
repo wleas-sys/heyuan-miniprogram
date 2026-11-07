@@ -13,7 +13,11 @@ Component({
     go(e) {
       const path = e.currentTarget.dataset.path
       const current = this.data.list[this.data.selected]
-      if (current && current.path === path) return
+      // 已经在当前页签：再点一次回到顶部，比原地不动更符合预期
+      if (current && current.path === path) {
+        try { if (typeof wx.pageScrollTo === 'function') wx.pageScrollTo({ scrollTop: 0, duration: 260, fail() {} }) } catch (err) {}
+        return
+      }
       // 切换页签给一点触感，点错了也能立刻感知
       try { if (typeof wx.vibrateShort === 'function') wx.vibrateShort({ type: 'light', fail() {} }) } catch (err) {}
       wx.switchTab({ url: path, fail() {} })

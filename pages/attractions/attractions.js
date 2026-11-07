@@ -40,12 +40,17 @@ Page(ui.page({
     if (this._timer && typeof clearTimeout === 'function') clearTimeout(this._timer)
     this._timer = null
   },
+  // 筛选条件签名：只有条件真的变了才把分页打回第一页
+  signature() { return [this.data.keyword.trim(), this.data.category, this.data.region, this.data.onlySaved].join('|') },
   refresh() {
     const result = searchAll.call(this)
+    const sign = this.signature()
+    const keep = sign === this._sig && this._shown
+    this._sig = sign
+    this._shown = keep ? Math.max(PAGE, this._shown) : PAGE
     this._all = result.list
-    this._shown = PAGE
     this.setData({
-      list: result.list.slice(0, PAGE), total: result.list.length, savedCount: result.saved.length,
+      list: result.list.slice(0, this._shown), total: result.list.length, savedCount: result.saved.length,
       hasFilters: !!this.data.keyword.trim() || this.data.category !== '全部' || this.data.region !== '全部地区' || this.data.onlySaved
     })
   },

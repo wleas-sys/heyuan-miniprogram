@@ -16,6 +16,7 @@ Page(ui.page({
   toggleRoutes() { const expanded = !this.data.routesExpanded; ui.haptic(); this.setData({ routesExpanded: expanded, routes: (expanded ? ROUTES : ROUTES.slice(0, 3)).map(r => Object.assign({}, r, { stopCount: r.days.reduce((n, d) => n + d.length, 0) })) }) },
   feedback() { if (ui.singlePage()) return ui.toast('请先点击底部“前往小程序”'); wx.navigateTo({ url: '/pages/feedback/feedback' }) },
   input(e) { this.setData({ keyword: e.detail.value }) },
+  clearKeyword() { this.setData({ keyword: '' }) },
   search() {
     if (ui.singlePage()) return ui.toast('请先点击底部“前往小程序”')
     getApp().globalData.browseKeyword = this.data.keyword.trim()
