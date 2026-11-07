@@ -126,3 +126,33 @@
 .food-title{font-family:var(--serif);font-size:29rpx}
 .food-note{font-size:21rpx;color:var(--muted)}
 .food-arrow{color:var(--seal)}
+
+/* ===== 重叠卡组：收起互压，散开看名字 ===== */
+.route-deck{position:relative;margin-top:8rpx;transition:height .46s cubic-bezier(.22,1,.36,1)}
+.route-sheet{position:absolute;left:0;right:0;height:158rpx;background:var(--card);border:1rpx solid var(--line);overflow:hidden;transition:top .46s cubic-bezier(.22,1,.36,1)}
+.route-sheet-head{height:52rpx;display:flex;align-items:center;gap:14rpx;padding:0 18rpx;border-bottom:1rpx solid var(--line);background:var(--card)}
+.route-sheet-no{font-family:var(--serif);font-size:22rpx;color:var(--seal);letter-spacing:1rpx;flex-shrink:0}
+.route-sheet-name{flex:1;min-width:0;font-family:var(--serif);font-size:26rpx;letter-spacing:.4rpx;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+.route-sheet-meta{font-size:18rpx;color:var(--muted);letter-spacing:1rpx;flex-shrink:0}
+.route-sheet-body{display:flex;align-items:center;gap:16rpx;padding:12rpx 18rpx;height:106rpx}
+.route-sheet-photo{width:104rpx;height:82rpx;border-radius:2rpx;flex-shrink:0;background:var(--paper-2)}
+.route-sheet .route-placeholder{border-radius:2rpx;background:var(--paper-2);color:var(--ink-2);font-family:var(--serif);border:1rpx solid var(--line);display:flex;align-items:center;justify-content:center;font-size:28rpx}
+.route-sheet .route-meta{font-size:18rpx;letter-spacing:1rpx;color:var(--muted)}
+.route-sheet .route-subtitle{font-size:21rpx;color:var(--ink-2);line-height:1.55;margin-top:4rpx;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.route-sheet .route-arrow{color:var(--seal);font-size:26rpx;flex-shrink:0}
+.route-deck-bar{display:flex;align-items:center;justify-content:space-between;padding-top:14rpx;min-height:56rpx}
+.route-hint{font-size:19rpx;color:var(--muted);letter-spacing:1.2rpx}
+.route-collapse{font-size:21rpx;color:var(--seal);letter-spacing:1rpx;padding:10rpx 0 10rpx 20rpx}
+
+/* ===== 横向手风琴：等宽窄条，点开变宽，内容延迟淡入 ===== */
+.scene-row{display:flex;gap:10rpx;padding:24rpx 0 6rpx;align-items:stretch}
+.scene{flex:1;min-width:0;min-height:212rpx;text-align:left;padding:18rpx 16rpx;border:1rpx solid var(--line);background:transparent;display:flex;flex-direction:column;align-items:flex-start;transition:flex .36s cubic-bezier(.22,1,.36,1),background-color .3s ease;overflow:hidden}
+.scene.active{flex:2.5;background:var(--paper-2)}
+.scene-icon{margin:0 0 12rpx;width:52rpx;height:48rpx;flex-shrink:0}
+.scene-title{font-family:var(--serif);font-size:24rpx;letter-spacing:.5rpx;color:var(--ink);white-space:nowrap}
+.scene-note{font-size:19rpx;color:var(--muted);line-height:1.55;margin-top:5rpx;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.scene.active .scene-note{-webkit-line-clamp:4}
+.scene-more{margin-top:auto;padding-top:14rpx;display:flex;flex-direction:column;gap:6rpx;opacity:0;animation:scene-in .34s ease-out .1s both}
+.scene-count{font-size:18rpx;color:var(--muted);letter-spacing:1rpx}
+.scene-go{font-size:21rpx;color:var(--seal);letter-spacing:1rpx}
+@keyframes scene-in{from{opacity:0;transform:translateY(8rpx)}to{opacity:1;transform:none}}

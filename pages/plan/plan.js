@@ -33,6 +33,13 @@ function minuteFields(view) {
   return { lunch: String(timing.lunch), transfer: String(timing.transfer), visits, legs }
 }
 
+// 清单完成度：背景填充宽度与“全部完成”提亮都从这里来
+function progressOf(checks) {
+  const done = checks.filter(item => item.done).length
+  const percent = checks.length ? Math.round(done / checks.length * 100) : 0
+  return { checks, checkedCount: done, checksPercent: percent, checksComplete: checks.length > 0 && done === checks.length }
+}
+
 function validDate(value) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false
   const parts = value.split('-').map(Number), date = new Date(0)
@@ -68,7 +75,7 @@ Page(ui.page({
     checksAvailable: true,
     failedPhotos: {},
     saved: false,
-    checksOpen: false, expandedStop: '',
+    checksOpen: false, expandedStop: '', checksPercent: 0, checksComplete: false,
     undoOpen: false, undoText: '', undoPlan: null, flashId: '',
     daysLiquid: false, leavingId: '', ripples: []
   },
@@ -528,9 +535,9 @@ Page(ui.page({
       const changed = !!value && value.routeKey !== this.checkRoute()
       const ids = value && !changed ? value.items : []
       const checks = CHECK_ITEMS.map(item => Object.assign({}, item, { done: ids.indexOf(item.id) >= 0 }))
-      this.setData({ checks, checkedCount: checks.filter(item => item.done).length, checksAvailable: true, checksChanged: changed })
+      this.setData(Object.assign(progressOf(checks), { checksAvailable: true, checksChanged: changed }))
     } catch (e) {
-      this.setData({ checks: CHECK_ITEMS.map(item => Object.assign({}, item, { done: false })), checkedCount: 0, checksAvailable: false, checksChanged: false })
+      this.setData(Object.assign(progressOf(CHECK_ITEMS.map(item => Object.assign({}, item, { done: false }))), { checksAvailable: false, checksChanged: false }))
     }
   },
 
@@ -544,7 +551,7 @@ Page(ui.page({
         routeKey: this.checkRoute(),
         items: checks.filter(item => item.done).map(item => item.id)
       })
-      this.setData({ checks, checkedCount: checks.filter(item => item.done).length, checksChanged: false })
+      this.setData(Object.assign(progressOf(checks), { checksChanged: false }))
     } catch (e) {
       ui.toast('清单未能保存')
     }

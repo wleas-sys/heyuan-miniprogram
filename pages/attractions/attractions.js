@@ -5,6 +5,7 @@ const regions = ['全部地区'].concat(Array.from(new Set(PLACES.map(p => p.reg
 const categories = ['全部'].concat(Array.from(new Set(PLACES.map(p => p.category))))
 // 首屏只渲染一页，滚到底再追加，避免 82 张卡片一次性铺开导致首次进入发卡
 const PAGE = 24
+const SUMMARY_HEIGHT = 250
 function searchAll() {
   const query = this.data.keyword.trim().toLowerCase(), saved = storage.favorites()
   const match = (p, haystack) => (!query || haystack.indexOf(query) >= 0) && (this.data.category === '全部' || p.category === this.data.category) && (this.data.region === '全部地区' || p.region === this.data.region) && (!this.data.onlySaved || saved.indexOf(p.id) >= 0)
@@ -22,7 +23,7 @@ function searchAll() {
   return { list: raw.map(p => Object.assign({}, p, { saved: saved.indexOf(p.id) >= 0, teaser: (p.highlights || [])[0] || (p.intro || '').split('。')[0], cardTags: (p.tags || []).slice(0, 2) })), saved }
 }
 Page(ui.page({
-  data: { keyword: '', category: '全部', categories, region: '全部地区', regions, onlySaved: false, list: [], total: 0, hasFilters: false, savedCount: 0, catInto: 'cat-0', regionInto: 'reg-0', poppedId: '', burstId: '', burstDots: [0, 1, 2, 3, 4, 5], loadedPhotos: {}, failedPhotos: {}, switchElastic: false },
+  data: { keyword: '', category: '全部', categories, region: '全部地区', regions, onlySaved: false, list: [], total: 0, hasFilters: false, savedCount: 0, catInto: 'cat-0', regionInto: 'reg-0', poppedId: '', burstId: '', burstDots: [0, 1, 2, 3, 4, 5], loadedPhotos: {}, failedPhotos: {}, switchElastic: false, summaryOpen: false, summaryH: 0, summaryDragging: false, summaryStats: [] },
   onShow() {
     ui.tab.call(this, 1)
     const global = getApp().globalData, filter = global.browseFilter
@@ -49,11 +50,46 @@ Page(ui.page({
     this._sig = sign
     this._shown = keep ? Math.max(PAGE, this._shown) : PAGE
     this._all = result.list
+    const counts = {}
+    result.list.forEach(p => { counts[p.category] = (counts[p.category] || 0) + 1 })
+    const summaryStats = Object.keys(counts).slice(0, 4).map(label => ({ label, value: counts[label] }))
     this.setData({
-      list: result.list.slice(0, this._shown), total: result.list.length, savedCount: result.saved.length,
+      list: result.list.slice(0, this._shown), total: result.list.length, savedCount: result.saved.length, summaryStats,
       hasFilters: !!this.data.keyword.trim() || this.data.category !== '全部' || this.data.region !== '全部地区' || this.data.onlySaved
     })
   },
+  // 下拉摘要：胶囊跟手下拉，松手吸附；点空白收
+  sumStart(e) {
+    const t = e.touches && e.touches[0]
+    if (!t) return
+    this._sumY = t.clientY
+    this._sumBase = this.data.summaryOpen ? SUMMARY_HEIGHT : this.data.summaryH
+    this._sumMoved = false
+  },
+  sumMove(e) {
+    const t = e.touches && e.touches[0]
+    if (!t || this._sumY === undefined) return
+    const dy = t.clientY - this._sumY
+    if (Math.abs(dy) > 6) this._sumMoved = true
+    const h = Math.max(0, Math.min(SUMMARY_HEIGHT, this._sumBase + dy))
+    this.setData({ summaryH: h, summaryDragging: true })
+  },
+  sumEnd() {
+    const open = this.data.summaryH > SUMMARY_HEIGHT * 0.42
+    // 拖动结束后短时间内忽略随后的 tap，避免刚拉开又被点回去
+    if (this._sumMoved) this._sumIgnoreTapAt = Date.now() + 400
+    this._sumY = undefined
+    this._sumMoved = false
+    this.setData({ summaryOpen: open, summaryH: open ? SUMMARY_HEIGHT : 0, summaryDragging: false })
+    ui.haptic()
+  },
+  sumTap() {
+    if (Date.now() < (this._sumIgnoreTapAt || 0)) return
+    const open = !this.data.summaryOpen
+    this.setData({ summaryOpen: open, summaryH: open ? SUMMARY_HEIGHT : 0 })
+    ui.haptic()
+  },
+  closeSummary() { this._sumIgnoreTapAt = 0; this._sumY = undefined; this.setData({ summaryOpen: false, summaryH: 0, summaryDragging: false }) },
   more() {
     if (!this._all || this.data.list.length >= this._all.length) return
     this._shown = (this._shown || PAGE) + PAGE

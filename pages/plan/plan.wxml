@@ -55,7 +55,8 @@
     </block>
     <view class="schedule-note">时间表按你填写的停留、休息和路上时间顺排，不是实时导航。未计入出发地到首站、末站返回住处、跨日交通、排队和临时停留；营业时间、预约与交通仍需出发前核对。</view>
   </view>
-  <view wx:if="{{view.count}}" class="section card budget-panel">
+  <view wx:if="{{view.count}}" class="section budget-tray">
+    <view class="budget-tray-body">
     <button class="panel-toggle" bindtap="toggleBudget"><view><view class="section-title">参考预算与记录</view><view class="small muted">{{view.estimate.caption}} </view></view><view class="cost-summary"><text class="cost-value">{{view.estimate.text}}</text><view class="small muted cost-unit">/ 人<view class="disclosure fold-chevron {{budgetOpen ? 'open' : ''}}"></view></view></view></button>
     <view wx:if="{{budgetOpen}}" class="budget-detail">
       <view class="budget-caption">{{view.estimate.assumptions}}</view>
@@ -64,8 +65,15 @@
       <view wx:for="{{view.warnings}}" wx:key="*this" class="notice">{{item}}</view>
     </view>
     <view wx:if="{{!budgetOpen && plan.budget !== null && view.subtotal > plan.budget}}" class="budget-over">已填费用超出预算 ¥{{view.subtotal - plan.budget}}</view>
+    </view>
   </view>
-  <view wx:if="{{view.count}}" class="section card departure-panel"><button class="section-head departure-toggle" bindtap="toggleChecks"><view><text class="section-title">出发前，逐项确认</text><view class="small muted">{{checksChanged ? '行程已调整，请重新确认' : '只记在本机，不随行程分享'}}</view></view><view class="check-count fold-trigger"><text>{{checkedCount}} / {{checks.length}}</text><view class="fold-chevron {{checksOpen ? 'open' : ''}}"></view></view></button><view wx:if="{{checksOpen}}"><button wx:for="{{checks}}" wx:key="id" class="check-item {{item.done ? 'checked' : ''}}" data-id="{{item.id}}" bindtap="toggleCheck" disabled="{{!checksAvailable || singlePage}}"><view class="check-box"><view class="check-stroke stroke-a"></view><view class="check-stroke stroke-b"></view></view><view class="grow"><view class="check-title">{{item.title}}</view><view class="check-note">{{item.note}}</view></view></button><view wx:if="{{!checksAvailable}}" class="small muted">清单暂时无法读取，重新进入本页可重试。</view></view></view>
+  <view wx:if="{{view.count}}" class="section card departure-panel {{checksComplete ? 'complete' : ''}}">
+    <view class="check-fill" style="width:{{checksPercent}}%"></view>
+    <view class="check-body">
+      <button class="section-head departure-toggle" bindtap="toggleChecks"><view><text class="section-title">出发前，逐项确认</text><view class="small muted">{{checksComplete ? '都确认好了，可以出发' : checksChanged ? '行程已调整，请重新确认' : '只记在本机，不随行程分享'}}</view></view><view class="check-count fold-trigger"><text>{{checkedCount}} / {{checks.length}}</text><view class="fold-chevron {{checksOpen ? 'open' : ''}}"></view></view></button>
+      <view wx:if="{{checksOpen}}"><button wx:for="{{checks}}" wx:key="id" class="check-item {{item.done ? 'checked' : ''}}" data-id="{{item.id}}" bindtap="toggleCheck" disabled="{{!checksAvailable || singlePage}}"><view class="check-box"><view class="check-stroke stroke-a"></view><view class="check-stroke stroke-b"></view></view><view class="grow"><view class="check-title">{{item.title}}</view><view class="check-note">{{item.note}}</view></view></button><view wx:if="{{!checksAvailable}}" class="small muted">清单暂时无法读取，重新进入本页可重试。</view></view>
+    </view>
+  </view>
   <view class="section two-col plan-bottom-actions"><button class="secondary" bindtap="save" disabled="{{!view.complete}}">{{saved ? '已保存 ✓' : '保存行程'}}</button><button id="previewCta" class="primary has-ripple" bindtap="preview" bindtouchstart="ripple" disabled="{{!view.complete}}"><view wx:for="{{ripples}}" wx:key="id" class="ripple" style="left: {{item.left}}px; top: {{item.top}}px;"></view><text>预览与分享 →</text></button></view>
   <view class="end-note">{{view.complete ? '调整会自动保留为草稿；点“保存行程”存入我的。' : '为每一天加入地点后，即可保存和分享。'}}</view>
   <view wx:if="{{undoOpen}}" class="snackbar" catchtap="noop">

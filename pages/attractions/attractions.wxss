@@ -91,3 +91,24 @@
 .duration-text{font-size:20rpx;letter-spacing:.5rpx}
 .more-button{border-radius:2rpx;border:1rpx solid var(--line-strong);background:transparent}
 .browse-end{font-size:20rpx;letter-spacing:1rpx}
+
+/* ===== 下拉摘要：单行胶囊 → 跟手展开统计 ===== */
+.summary-dock{position:relative;z-index:6;margin:10rpx 0 4rpx}
+.summary-pill{display:flex;align-items:center;gap:10rpx;height:74rpx;padding:0 18rpx;border:1rpx solid var(--line-strong);background:var(--card);border-radius:2rpx}
+.summary-count{font-family:var(--serif);font-size:34rpx;color:var(--seal);line-height:1}
+.summary-unit{font-size:20rpx;color:var(--muted);letter-spacing:1rpx}
+.summary-divide{width:1rpx;height:22rpx;background:var(--line);margin:0 6rpx}
+.summary-scope{flex:1;min-width:0;font-size:21rpx;color:var(--ink-2);letter-spacing:.5rpx}
+.summary-chevron{width:10rpx;height:10rpx;border-right:2rpx solid var(--muted);border-bottom:2rpx solid var(--muted);transform:rotate(45deg);transition:transform .28s cubic-bezier(.34,1.4,.64,1);margin-top:-4rpx}
+.summary-chevron.up{transform:rotate(-135deg);margin-top:4rpx}
+.summary-panel{height:0;overflow:hidden;background:var(--paper-2);border:1rpx solid transparent;transition:height .32s cubic-bezier(.22,1,.36,1)}
+.summary-dock.open .summary-panel{border-color:var(--line);margin-top:8rpx}
+.summary-dock.dragging .summary-panel{transition:none}
+.summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rpx;background:var(--line);margin:1rpx}
+.summary-cell{background:var(--paper-2);padding:16rpx 18rpx;display:flex;align-items:baseline;gap:10rpx}
+.summary-value{font-family:var(--serif);font-size:34rpx;color:var(--ink)}
+.summary-label{font-size:19rpx;color:var(--muted);letter-spacing:1rpx}
+.summary-foot{padding:12rpx 18rpx 14rpx;font-size:18rpx;color:var(--muted);letter-spacing:.5rpx}
+.summary-dismiss{position:fixed;left:0;right:0;top:0;bottom:0;z-index:4;background:transparent}
+.list-zone{transition:opacity .24s ease}
+.list-zone.is-dim{opacity:.3;pointer-events:none}

@@ -1,7 +1,7 @@
-<view wx:if="{{!hidden}}" class="tabbar">
+<view wx:if="{{!hidden}}" class="tabbar" bindtouchstart="barStart" catchtouchmove="barMove" bindtouchend="barEnd" bindtouchcancel="barEnd">
   <button wx:for="{{list}}" wx:key="path" class="tab {{selected === index ? 'selected' : ''}}" data-path="{{item.path}}" bindtap="go" aria-label="{{item.text}}">
     <view class="tab-mark"></view>
-    <view class="icon-shell">
+    <view class="icon-shell" style="transform:scale({{scales[index]}})">
       <image class="tab-icon" src="{{selected === index ? item.selectedIcon : item.icon}}" mode="aspectFit" />
     </view>
     <text class="tab-label">{{item.text}}</text>

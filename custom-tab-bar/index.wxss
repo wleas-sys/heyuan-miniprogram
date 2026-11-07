@@ -87,3 +87,6 @@
 .tab.selected .tab-icon{opacity:1}
 .tab.selected{color:#173B2C;font-weight:600}
 .tab-label{font-size:19rpx;letter-spacing:1.5rpx}
+
+/* 跟手 Dock：靠近的手指让图标放大，离开回弹 */
+.icon-shell{transform-origin:center bottom;transition:transform .12s ease-out}
