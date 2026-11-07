@@ -7,3 +7,29 @@
 .saved-plan{border-color:rgba(26,50,38,.07);box-shadow:var(--shadow-sm);border-radius:28rpx}
 .draft-entry{border-color:rgba(26,50,38,.08);background:linear-gradient(135deg,#F5F8F0,#EBF1E5);box-shadow:var(--shadow-sm);border-radius:26rpx}
 .about-row{border-color:var(--hairline)}
+
+/* ===== 纸墨编辑风 · 我的 ===== */
+.profile-heading .title{font-family:var(--serif);font-size:50rpx;letter-spacing:1rpx}
+.profile-heading .subtitle{font-size:23rpx}
+.notebook-mark{border-radius:2rpx}
+.profile-stats{gap:16rpx}
+.stat-card{border-radius:2rpx;background:transparent;border:1rpx solid var(--line);box-shadow:none;padding:24rpx}
+.stat-card:last-child{background:transparent}
+.stat-card .stat{font-family:var(--serif);font-size:56rpx;letter-spacing:0}
+.stat-label{font-size:20rpx;letter-spacing:1rpx;color:var(--muted)}
+.stat-label>text{color:var(--seal);font-size:22rpx}
+.stat-label .capacity{font-size:17rpx;color:var(--muted);letter-spacing:0}
+.draft-entry{border-radius:2rpx;border:1rpx dashed var(--line-strong);background:transparent;box-shadow:none}
+.draft-icon{border-radius:2rpx;background:var(--seal);color:var(--paper)}
+.draft-title{font-family:var(--serif);font-size:28rpx}
+.draft-description{font-size:20rpx;color:var(--muted)}
+.draft-arrow{color:var(--seal)}
+.saved-plan{border-radius:2rpx;border:1rpx solid var(--line);box-shadow:none;background:var(--card)}
+.saved-plan .place-name{font-family:var(--serif);font-size:29rpx}
+.saved-photo{border-radius:2rpx}
+.saved-placeholder{border-radius:2rpx;background:var(--paper-2);color:var(--ink-2);font-family:var(--serif)}
+.saved-footer .delete-button{color:var(--seal)}
+.open-button{color:var(--green)}
+.about-row{border-top:1rpx solid var(--line);border-bottom:1rpx solid var(--line);border-left:0;border-right:0;border-radius:0;padding:24rpx 0;background:transparent}
+.about-name{font-family:var(--serif)}
+.version-tag{font-family:var(--serif);color:var(--seal)}

@@ -58,3 +58,36 @@
 .photo-region{font-size:22rpx;letter-spacing:.8rpx}
 .favorite-button{background:rgba(255,254,251,.92);box-shadow:0 2rpx 10rpx rgba(20,45,29,.14)}
 .more-button{border-color:rgba(26,50,38,.1);background:var(--card);box-shadow:var(--shadow-sm)}
+
+/* ===== 纸墨编辑风 · 景点列表 ===== */
+.browse-heading{align-items:flex-end;padding-bottom:18rpx;border-bottom:1rpx solid var(--line)}
+.browse-title{font-family:var(--serif);font-size:44rpx;letter-spacing:1rpx;line-height:1.25;margin-top:8rpx}
+.browse-label{font-size:18rpx;letter-spacing:4rpx;color:var(--seal)}
+.saved-filter{border-radius:2rpx;border:1rpx solid var(--line-strong);background:transparent;box-shadow:none;font-size:21rpx;letter-spacing:1rpx}
+.saved-filter.selected{background:var(--paper-2);border-color:var(--line-strong);color:var(--ink)}
+.mini-switch{border-radius:2rpx;background:var(--line-strong)}
+.mini-switch.on{background:var(--seal)}
+.mini-knob{border-radius:1rpx;box-shadow:none}
+.search-box{border-radius:2rpx;border:1rpx solid var(--line-strong);background:transparent;box-shadow:none;margin-top:22rpx}
+.category-scroll{border-bottom:1rpx solid var(--line);margin-top:20rpx}
+.category-tab{font-size:25rpx;letter-spacing:1rpx;color:var(--muted);padding:16rpx 2rpx 18rpx}
+.category-tab.active{color:var(--ink);font-weight:600}
+.category-tab.active:after{height:3rpx;left:0;right:0;width:100%;background:var(--seal);border-radius:0}
+.region-chip{border-radius:2rpx;background:transparent;border:1rpx solid var(--line);color:var(--ink-2);font-size:22rpx;letter-spacing:.5rpx}
+.region-chip.active{background:var(--green);border-color:var(--green);color:var(--paper);font-weight:500}
+.results-head{border-bottom:1rpx solid var(--line);padding-bottom:12rpx;margin:6rpx 0 22rpx}
+.result-number{font-family:var(--serif);font-size:32rpx;color:var(--seal);margin-right:6rpx}
+.place-card{border-radius:2rpx;border:1rpx solid var(--line);background:var(--card);box-shadow:none;margin-bottom:28rpx}
+.place-visual{height:340rpx}
+.photo-region{font-size:18rpx;letter-spacing:2rpx;left:20rpx;bottom:18rpx}
+.favorite-button{border-radius:2rpx;background:rgba(250,248,241,.92);box-shadow:none;width:64rpx!important;height:64rpx}
+.favorite-button.is-saved{background:var(--seal)}
+.place-body{padding:24rpx 24rpx 26rpx}
+.place-name{font-family:var(--serif);font-size:34rpx;letter-spacing:.5rpx;line-height:1.35}
+.place-arrow{color:var(--seal);font-size:26rpx}
+.place-teaser{font-size:23rpx;color:var(--ink-2);line-height:1.75}
+.place-footer{border-top:1rpx solid var(--line);padding-top:16rpx;margin-top:18rpx}
+.place-tags text{border:1rpx solid var(--line);background:transparent;border-radius:2rpx;color:var(--ink-2);font-size:19rpx;letter-spacing:.5rpx}
+.duration-text{font-size:20rpx;letter-spacing:.5rpx}
+.more-button{border-radius:2rpx;border:1rpx solid var(--line-strong);background:transparent}
+.browse-end{font-size:20rpx;letter-spacing:1rpx}

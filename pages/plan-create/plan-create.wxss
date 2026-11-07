@@ -28,3 +28,12 @@
 .form-card{background:var(--card);border-color:var(--hairline);box-shadow:var(--shadow-sm);border-radius:30rpx}
 .result-card{background:var(--card);border-color:var(--hairline);box-shadow:var(--shadow-sm);border-radius:28rpx}
 .form-section{border-top-color:var(--hairline)}
+
+/* ===== 纸墨编辑风 · 规划 ===== */
+.form-card{border-radius:2rpx;border:1rpx solid var(--line);box-shadow:none}
+.form-step{font-family:var(--serif);color:var(--seal)}
+.day-choice,.option,.interest-choice,.pace-choice,.crowd-choice{border-radius:2rpx;border-color:var(--line)}
+.day-choice.selected,.option.selected,.interest-choice.selected,.pace-choice.selected,.crowd-choice.selected{border-radius:2rpx}
+.result-card{border-radius:2rpx;box-shadow:none;border:1rpx solid var(--line)}
+.result-title{font-family:var(--serif);letter-spacing:.5rpx}
+.results-heading .section-title{font-family:var(--serif)}

@@ -91,3 +91,35 @@
 .add-stop{border-color:#B9CBB4;background:#F1F4EC}
 .transport-option.selected{background:#EDF2E7;border-color:#B9CEB4}
 .sheet{box-shadow:0 -16rpx 60rpx rgba(13,34,25,.14)}
+
+/* ===== 纸墨编辑风 · 行程 ===== */
+.planner-page .title{font-family:var(--serif);font-size:50rpx;letter-spacing:1rpx;line-height:1.25}
+.new-plan{border-radius:2rpx;border:1rpx solid var(--line-strong);background:transparent;box-shadow:none;font-family:var(--serif)}
+.setup-card{border-radius:2rpx;border:1rpx solid var(--line);box-shadow:none}
+.title-field{font-family:var(--serif);letter-spacing:.5rpx}
+.setup-divider{background:var(--line)}
+.day-tab{border-radius:2rpx;border:1rpx solid var(--line);background:transparent;box-shadow:none}
+.day-tab.active{background:var(--green);border-color:var(--green);box-shadow:none}
+.day-count{letter-spacing:1rpx}
+.segmented{border-radius:2rpx;background:var(--paper-2)}
+.segmented-thumb{border-radius:1rpx;background:var(--card);box-shadow:none}
+.transport-option{border-radius:2rpx;border-color:var(--line)}
+.transport-option.selected{background:var(--paper-2);border-color:var(--line-strong);color:var(--ink)}
+.stop.card{border-radius:2rpx;box-shadow:none;border:1rpx solid var(--line)}
+.stop-number{border-radius:2rpx;background:var(--paper-2);color:var(--seal);font-family:var(--serif)}
+.stop-photo{border-radius:2rpx}
+.stop .place-name{font-family:var(--serif);font-size:29rpx}
+.stop-actions{border-top-color:var(--line);background:transparent}
+.add-stop{border-radius:2rpx;border:1rpx dashed var(--line-strong);background:transparent}
+.check-box{border-radius:2rpx;border-color:var(--line-strong)}
+.check-item.checked .check-box{background:var(--seal);border-color:var(--seal)}
+.check-count{border-radius:2rpx;background:transparent;border:1rpx solid var(--line);font-family:var(--serif);color:var(--ink-2);flex-shrink:0}
+.sheet{border-radius:0;background:var(--paper);box-shadow:none;border-top:1rpx solid var(--line-strong)}
+.sheet-handle{border-radius:0;background:var(--line-strong)}
+.sheet-close{border-radius:2rpx;background:transparent;border:1rpx solid var(--line);color:var(--ink-2)}
+.picker-search{border-radius:2rpx;border-color:var(--line-strong);background:transparent}
+.candidate-photo{border-radius:2rpx}
+.candidate-add{border-radius:2rpx;background:var(--paper-2);border:1rpx solid var(--line);color:var(--ink)}
+.budget-panel,.departure-panel{border-radius:2rpx}
+.cost-value{font-family:var(--serif);color:var(--seal)}
+.snackbar{border-radius:2rpx;background:var(--green);box-shadow:none}

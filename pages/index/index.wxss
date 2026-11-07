@@ -50,3 +50,79 @@
 .destination-name{font-size:29rpx;font-weight:600;letter-spacing:-.2rpx}
 .destination-category{letter-spacing:.6rpx}
 .food-entry{border-color:var(--hairline);margin-top:42rpx}
+
+/* ===== 纸墨编辑风 · 首页重构 ===== */
+.home{padding-top:20rpx}
+.home-heading{align-items:flex-start;margin-bottom:26rpx}
+.heading-main{min-width:0;flex:1}
+.home-brand{display:flex;align-items:center;gap:14rpx}
+.seal-mark{width:46rpx;height:46rpx;background:var(--seal);color:#FBF8F1;font-family:var(--serif);font-size:18rpx;line-height:1.06;letter-spacing:1rpx;display:flex;align-items:center;justify-content:center;text-align:center;padding:4rpx;border-radius:2rpx;flex-shrink:0}
+.home-label{font-size:19rpx;letter-spacing:4rpx;color:var(--ink-2)}
+.home-title{font-family:var(--serif);font-size:52rpx;line-height:1.22;font-weight:600;letter-spacing:1rpx;margin-top:16rpx;color:var(--ink)}
+.home-title text{display:block;margin-left:0;color:var(--green)}
+.home-feedback{border-radius:2rpx;background:transparent;border:1rpx solid var(--line-strong);color:var(--ink-2);letter-spacing:1rpx;min-height:60rpx;padding:12rpx 16rpx}
+.feedback-bubble{border-color:var(--ink-2)}
+.feedback-bubble:after{border-left-color:var(--ink-2)}
+
+/* 封面：通栏、直角、压角更深 */
+.home-hero{margin:0 -32rpx;border-radius:0;border:0;border-top:1rpx solid var(--line);border-bottom:1rpx solid var(--line);box-shadow:none;background:transparent;overflow:hidden}
+.hero-visual{height:430rpx}
+.hero-shade{background:linear-gradient(180deg,rgba(12,28,20,.3),rgba(12,28,20,.02) 40%,rgba(10,24,17,.78))}
+.hero-location{border-radius:2rpx;background:rgba(12,28,20,.3);border:1rpx solid rgba(255,255,255,.4);letter-spacing:1.4rpx;font-size:19rpx;padding:8rpx 14rpx;left:32rpx;top:26rpx}
+.hero-copy{left:32rpx;right:32rpx;bottom:34rpx}
+.hero-kicker{font-size:19rpx;letter-spacing:4rpx;color:rgba(255,255,255,.82);margin-bottom:14rpx}
+.hero-title{font-family:var(--serif);font-size:60rpx;font-weight:600;letter-spacing:2rpx;line-height:1.2;text-shadow:none}
+.hero-rule{width:56rpx;height:3rpx;background:var(--seal);margin-top:20rpx}
+.hero-planner{padding:24rpx 32rpx;background:var(--card);gap:18rpx;border-top:1rpx solid var(--line)}
+.planner-index{font-family:var(--serif);font-size:40rpx;color:var(--seal);line-height:1;flex-shrink:0;letter-spacing:1rpx}
+.hero-planner-title{font-family:var(--serif);font-size:30rpx;letter-spacing:.5rpx;color:var(--ink)}
+.hero-planner-note{font-size:21rpx;color:var(--muted)}
+.planner-hero-button{border-radius:2rpx;background:var(--green);box-shadow:none;letter-spacing:2rpx;font-weight:500;font-size:25rpx}
+
+/* 入口与草稿：改为细线方块 */
+.chat-entry{border-radius:2rpx;border:1rpx solid var(--line-strong);background:transparent;box-shadow:none;padding:22rpx 24rpx;gap:18rpx}
+.chat-entry-avatar{border-radius:2rpx;background:var(--seal);box-shadow:none;font-family:var(--serif);font-size:27rpx;width:56rpx;height:56rpx}
+.chat-entry-title{font-family:var(--serif);font-size:30rpx;font-weight:600;letter-spacing:.5rpx}
+.chat-entry-note{font-size:21rpx;color:var(--muted);margin-top:5rpx}
+.chat-entry-arrow{color:var(--seal)}
+.resume-card{border-radius:2rpx;border:1rpx dashed var(--line-strong);background:transparent;box-shadow:none}
+.resume-title{font-family:var(--serif)}
+.home-manual{color:var(--ink-2);letter-spacing:.5rpx}
+
+/* 搜索：方框 + 实心方按钮 */
+.home-search{border-radius:2rpx;border:1rpx solid var(--line-strong);background:transparent;box-shadow:none}
+.search-action{border-radius:2rpx;background:var(--green);color:var(--paper);letter-spacing:1rpx}
+.home-search .clear-keyword{background:transparent;border-radius:0;color:var(--muted)}
+
+/* 分节：编号 + 宋体标题 */
+.section-head{align-items:flex-start;gap:18rpx}
+.sec-no{font-family:var(--serif);font-size:26rpx;color:var(--seal);letter-spacing:1rpx;flex-shrink:0;margin-top:8rpx}
+.section-copy{flex:1;min-width:0}
+.section-overline{font-size:19rpx;letter-spacing:3rpx;color:var(--muted);margin-bottom:6rpx}
+.section-title{font-family:var(--serif);font-size:36rpx;letter-spacing:1rpx}
+.view-all{font-size:21rpx;color:var(--ink-2);letter-spacing:1rpx}
+
+/* 路线：编号清单 */
+.route-card{padding:22rpx 0;border-bottom:1rpx solid var(--line)}
+.route-photo{border-radius:4rpx}
+.route-placeholder{border-radius:4rpx;background:var(--paper-2);color:var(--ink-2);font-family:var(--serif);border:1rpx solid var(--line)}
+.route-name{font-family:var(--serif);font-size:31rpx;letter-spacing:.5rpx}
+.route-meta{font-size:19rpx;letter-spacing:2rpx;color:var(--muted)}
+.route-subtitle{font-size:22rpx;color:var(--ink-2)}
+.route-arrow{color:var(--seal)}
+
+/* 目的地：直角小卡 */
+.destination-grid{gap:16rpx}
+.destination-card{border-radius:2rpx;border:1rpx solid var(--line);background:var(--card);box-shadow:none}
+.destination-visual{height:220rpx}
+.destination-category{font-size:18rpx;letter-spacing:2rpx;background:rgba(12,28,20,.62);border-radius:2rpx;padding:5rpx 10rpx}
+.destination-region{font-size:18rpx;letter-spacing:2rpx;color:var(--seal)}
+.destination-name{font-family:var(--serif);font-size:31rpx;letter-spacing:.3rpx}
+.destination-teaser{font-size:22rpx;color:var(--ink-2)}
+
+/* 美食入口 */
+.food-entry{border-top:1rpx solid var(--line);border-bottom:1rpx solid var(--line);margin-top:44rpx;padding:28rpx 0;gap:20rpx}
+.food-word{font-family:var(--serif);color:var(--seal);border:1rpx solid var(--seal);width:70rpx;height:70rpx;display:flex;align-items:center;justify-content:center;border-radius:2rpx;font-size:38rpx}
+.food-title{font-family:var(--serif);font-size:29rpx}
+.food-note{font-size:21rpx;color:var(--muted)}
+.food-arrow{color:var(--seal)}

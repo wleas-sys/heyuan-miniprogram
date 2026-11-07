@@ -7,3 +7,21 @@
 .route-notes{background:linear-gradient(180deg,#F1F5EA,#ECF2E3);border-color:rgba(26,50,38,.07)}
 .route-dock{background:rgba(255,254,251,.94);backdrop-filter:blur(18px);border-top-color:var(--hairline);box-shadow:0 -8rpx 30rpx rgba(24,45,34,.05)}
 .overview-value{color:#2C5138}
+
+/* ===== 纸墨编辑风 · 路线 ===== */
+.route-hero{height:500rpx}
+.route-hero-title{font-family:var(--serif);font-size:52rpx;letter-spacing:1rpx;font-weight:600}
+.route-badge{border-radius:2rpx;letter-spacing:1rpx}
+.route-serial{letter-spacing:4rpx}
+.route-overview{border-radius:2rpx;box-shadow:none;border:1rpx solid var(--line);background:var(--card);margin-top:-28rpx}
+.overview-value{font-family:var(--serif);color:var(--seal)}
+.day-title{font-family:var(--serif);letter-spacing:.5rpx}
+.day-no{border-radius:2rpx;font-family:var(--serif);background:var(--paper-2);color:var(--seal);border:1rpx solid var(--line)}
+.stop-card{border-radius:2rpx;box-shadow:none;border:1rpx solid var(--line);background:var(--card)}
+.stop-title{font-family:var(--serif);font-size:29rpx;letter-spacing:.3rpx}
+.stop-photo{border-radius:2rpx}
+.route-notes{border-radius:2rpx;background:var(--paper-2);border:1rpx solid var(--line)}
+.notes-heading{font-family:var(--serif)}
+.note-number{font-family:var(--serif);color:var(--seal)}
+.route-dock{background:var(--paper);box-shadow:none;backdrop-filter:none}
+.route-dock .primary,.route-dock .secondary{border-radius:2rpx}

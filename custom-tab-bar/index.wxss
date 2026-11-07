@@ -75,3 +75,15 @@
 .tabbar{background:rgba(255,254,251,.95);border-top-color:rgba(26,50,38,.07);box-shadow:0 -8rpx 28rpx rgba(24,45,34,.06)}
 .tab.selected .icon-shell{background:rgba(20,58,47,.09)}
 .tab-label{font-size:20rpx;letter-spacing:.4rpx}
+
+/* ===== 纸墨编辑风：纸底 + 朱砂短线选中 ===== */
+.tabbar{background:#FAF8F1;border-top:1rpx solid #DED9C9;box-shadow:none;backdrop-filter:none;padding:6rpx 0 calc(8rpx + env(safe-area-inset-bottom))}
+.tab{position:relative;padding-top:10rpx;color:#79807A}
+.tab-mark{position:absolute;top:0;left:50%;width:26rpx;height:3rpx;margin-left:-13rpx;background:transparent;transition:background-color .2s ease}
+.tab.selected .tab-mark{background:#A6402C}
+.icon-shell{background:transparent;border-radius:0;width:64rpx;height:46rpx;margin-bottom:4rpx}
+.tab.selected .icon-shell{background:transparent}
+.tab-icon{width:40rpx;height:40rpx;opacity:.6;transition:opacity .2s ease}
+.tab.selected .tab-icon{opacity:1}
+.tab.selected{color:#173B2C;font-weight:600}
+.tab-label{font-size:19rpx;letter-spacing:1.5rpx}
