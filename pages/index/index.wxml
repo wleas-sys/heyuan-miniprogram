@@ -9,7 +9,7 @@
     </view>
     <view class="hero-planner">
       <view class="hero-planner-copy"><view class="hero-planner-title">你的下一程</view><view class="hero-planner-note">1—5 天，按喜好安排</view></view>
-      <button class="planner-hero-button" bindtap="goCreate" hover-class="pressed" aria-label="按偏好规划 1 至 5 天河源行程"><text>开始规划</text><text class="planner-hero-arrow">→</text></button>
+      <button id="heroCta" class="planner-hero-button" bindtap="goCreate" bindtouchstart="ripple" hover-class="pressed" aria-label="按偏好规划 1 至 5 天河源行程"><view wx:for="{{ripples}}" wx:key="id" class="ripple" style="left: {{item.left}}px; top: {{item.top}}px;"></view><text>开始规划</text><text class="planner-hero-arrow">→</text></button>
     </view>
   </view>
   <view class="chat-entry" bindtap="goChat" hover-class="pressed" aria-label="用对话方式说出你的出游想法">

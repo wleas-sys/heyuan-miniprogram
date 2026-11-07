@@ -44,6 +44,6 @@
 
   <view class="composer">
     <input class="composer-input" value="{{input}}" bindinput="onInput" bindconfirm="submit" confirm-type="send" maxlength="60" placeholder="说一句，比如「两天带爸妈看温泉」" placeholder-class="composer-ph" aria-label="说说你的出游想法"/>
-    <button class="composer-send" bindtap="submit" disabled="{{busy || !canSend}}" hover-class="send-pressed" aria-label="发送">发送</button>
+    <button id="chatSend" class="composer-send has-ripple" bindtap="submit" bindtouchstart="ripple" disabled="{{busy || !canSend}}" hover-class="send-pressed" aria-label="发送"><view wx:for="{{ripples}}" wx:key="id" class="ripple" style="left: {{item.left}}px; top: {{item.top}}px;"></view><text>发送</text></button>
   </view>
 </view>

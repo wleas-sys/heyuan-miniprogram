@@ -20,7 +20,7 @@ function summaryOf(form) {
 Page(ui.page({
   data: {
     messages: [], chips: [], input: '', busy: false, adopting: false, scrollInto: '', form: DEFAULTS,
-    canSend: false, summaryText: ''
+    canSend: false, summaryText: '', ripples: []
   },
 
   onLoad() {
@@ -45,6 +45,8 @@ Page(ui.page({
   },
 
   tapChip(e) { this.send(e.currentTarget.dataset.text) },
+
+  ripple(e) { ui.ripple.call(this, e, '#chatSend') },
 
   // 输入框回车（confirm）会带 detail.value；但点「发送」按钮的 tap 事件没有 value，
   // 必须回落到输入框当前内容，否则按钮点了没反应。

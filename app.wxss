@@ -66,15 +66,17 @@ button.primary[disabled] { background: var(--green); color: #fff; }
 .block-photo { width: 100%; height: 370rpx; display: block; border-radius: 24rpx; background: #E1E8DB; }
 .block-photo.portrait-photo { height: auto; }
 .timeline-notice { padding: 24rpx 32rpx; background: #EAF0E7; color: var(--green); font-size: 24rpx; line-height: 1.7; }
-.pressed { opacity: .74; transform: scale(.985); }
+.pressed { opacity: .78; transform: scale(.972); }
+/* 按下快速到位（.07s），松手用带过冲的曲线弹回，才有“重量” */
+.pressed, .pressed * { transition-duration: .07s !important; transition-timing-function: ease-out !important; }
 .photo-frame { border-radius: 24rpx; overflow: hidden; background: #E2E8DC; }
 .photo-frame .block-photo { border-radius: 0; }
 .portrait-frame { padding: 20rpx; background: #E7EBE1; }
 .portrait-frame .block-photo.portrait-photo { height: 420rpx; width: 100%; background: transparent; }
 .photo-frame + .tiny { font-size: 20rpx; line-height: 1.7; margin-top: 12rpx; color: #7F8B7D; }
-/* 统一手感：卡片按下有轻微回弹，松开是过渡而不是硬切；只列常见可点卡片，避免给全部节点加合成层 */
-.place-card,.route-card,.destination-card,.chat-entry,.resume-card,.saved-plan,.stat-card,.plan-card,.result-card,.draft-entry,.stop { transition: transform .16s cubic-bezier(.2,.8,.3,1), opacity .16s ease; }
-button { transition: transform .14s ease, opacity .14s ease, background-color .2s ease, color .2s ease, border-color .2s ease; }
+/* 统一手感：按下快、松手回弹；只列常见可点卡片，避免给全部节点加合成层 */
+.place-card,.route-card,.destination-card,.chat-entry,.resume-card,.saved-plan,.stat-card,.plan-card,.result-card,.draft-entry,.stop { transition: transform .36s cubic-bezier(.34,1.56,.64,1), opacity .2s ease; }
+button { transition: transform .36s cubic-bezier(.34,1.56,.64,1), opacity .2s ease, background-color .2s ease, color .2s ease, border-color .2s ease; }
 /* 长按/点击后的小幅缩放，配合 hover-class="pressed" 使用 */
 .tap-scale { transition: transform .18s cubic-bezier(.2,.8,.3,1), opacity .18s ease; }
 /* 页面内提示条（如“已移除 · 撤销”），固定在安全区上方 */
@@ -83,3 +85,7 @@ button { transition: transform .14s ease, opacity .14s ease, background-color .2
 .snackbar-action { flex-shrink: 0; padding: 8rpx 18rpx; border: 1rpx solid rgba(255,255,255,.32); border-radius: 12rpx; font-size: 24rpx; color: #EAF3E4; }
 .snackbar-close { flex-shrink: 0; width: 52rpx; height: 52rpx; line-height: 50rpx; text-align: center; font-size: 32rpx; color: rgba(255,255,255,.6); }
 @keyframes snackbar-in { from { opacity: 0; transform: translateY(18rpx); } to { opacity: 1; transform: translateY(0); } }
+/* 水波：从手指落点扩散，只在主操作按钮上使用 */
+.has-ripple { position: relative; overflow: hidden; }
+.ripple { position: absolute; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: rgba(255, 255, 255, .4); pointer-events: none; transform: scale(0); animation: ripple-out .6s cubic-bezier(.22, .8, .3, 1) forwards; }
+@keyframes ripple-out { 0% { transform: scale(0); opacity: .5; } 100% { transform: scale(13); opacity: 0; } }

@@ -103,3 +103,48 @@ test('取消重开不会清空当前对话', () => {
   page.restart()
   assert.equal(page.data.messages.length, before)
 })
+
+test('图片加载完才淡入，加载失败退回文字占位', () => {
+  const h = createHarness()
+  const page = h.page('attractions')
+  assert.equal(page.data.loadedPhotos.wanlvhu, undefined)
+  page.photoLoaded({ currentTarget: { dataset: { id: 'wanlvhu' } } })
+  assert.equal(page.data.loadedPhotos.wanlvhu, true)
+  page.photoFailed({ currentTarget: { dataset: { id: 'xiankeng' } } })
+  assert.equal(page.data.failedPhotos.xiankeng, true)
+})
+
+test('收藏只让当前这张卡反馈，取消收藏不再爆散', () => {
+  const h = createHarness()
+  const page = h.page('attractions')
+  page.favorite({ currentTarget: { dataset: { id: 'wanlvhu' } } })
+  assert.equal(page.data.poppedId, 'wanlvhu')
+  assert.equal(page.data.burstId, 'wanlvhu', '收藏成功才爆散')
+  page.favorite({ currentTarget: { dataset: { id: 'wanlvhu' } } })
+  assert.equal(page.data.poppedId, '')
+  assert.equal(page.data.burstId, '', '取消收藏不该再爆散')
+})
+
+test('我的页数字与收藏数同步（无定时器时直接落位，不卡在半路）', () => {
+  const h = createHarness()
+  const storage = h.module('utils/storage.js')
+  storage.toggleFavorite('wanlvhu')
+  storage.toggleFavorite('xiankeng')
+  const page = h.page('profile')
+  assert.equal(page.data.favoriteCount, 2)
+  assert.equal(page.data.favDisplay, 2)
+  assert.equal(page.data.planDisplay, page.data.plans.length)
+})
+
+test('行程页移除前先给卡片上移出态，落位后写入草稿', () => {
+  const h = createHarness()
+  const storage = h.module('utils/storage.js')
+  storage.setDraft(h.module('utils/planner.js').fromRoute('city'))
+  const page = h.page('plan')
+  const before = page.data.plan.days[0].length
+  page.remove({ currentTarget: { dataset: { day: 0, index: 0 } } })
+  assert.equal(page.data.leavingId, '', '无定时器环境要直接收尾，不能停在移出态')
+  assert.equal(page.data.plan.days[0].length, before - 1)
+  const wxml = require('node:fs').readFileSync(require('node:path').resolve(__dirname, '../pages/plan/plan.wxml'), 'utf8')
+  assert.ok(wxml.includes('leaving'), '模板里要绑定移出动画的类名')
+})

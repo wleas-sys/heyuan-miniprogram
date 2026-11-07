@@ -2,12 +2,28 @@ const storage = require('../../utils/storage')
 const planner = require('../../utils/planner')
 const ui = require('../../utils/ui')
 Page(ui.page({
-  data: { plans: [], visiblePlans: [], favoriteCount: 0, legacyCount: 0, query: '', draftCount: 0, draftDays: 1, draftTitle: '', failedPhotos: {} },
+  data: { plans: [], visiblePlans: [], favoriteCount: 0, favDisplay: 0, planDisplay: 0, legacyCount: 0, query: '', draftCount: 0, draftDays: 1, draftTitle: '', failedPhotos: {} },
   onShow() { ui.tab.call(this, 3, false); this.refresh() },
   refresh() {
     const plans = storage.getPlans().map(p => { const view = planner.describe(p), places = view.days.reduce((all, day) => all.concat(day.places), []), cover = places.find(place => place.photo); return Object.assign({}, p, { count: view.count, dateText: ui.formatDate(p.updatedAt), travelDate: view.dateLabel, photo: cover ? cover.photo : '', regionText: Array.from(new Set(places.map(place => place.region))).join(' · '), stopsText: places.map(place => place.shortName || place.name).join(' → ') }) })
     const draft = planner.describe(storage.getDraft())
-    this.setData({ plans, favoriteCount: storage.favorites().length, legacyCount: storage.legacyPlans().length, draftCount: draft.count, draftDays: draft.days.length, draftTitle: draft.plan.title }); this.filterPlans()
+    const favoriteCount = storage.favorites().length
+    this.setData({ plans, favoriteCount, legacyCount: storage.legacyPlans().length, draftCount: draft.count, draftDays: draft.days.length, draftTitle: draft.plan.title }); this.filterPlans()
+    this.rollNumbers(favoriteCount, plans.length)
+  },
+  // 数字缓入缓出、末段减速停下，不做硬切
+  rollNumbers(favorite, planCount) {
+    const fromFav = this.data.favDisplay || 0, fromPlan = this.data.planDisplay || 0
+    if (typeof setTimeout !== 'function' || (fromFav === favorite && fromPlan === planCount)) return this.setData({ favDisplay: favorite, planDisplay: planCount })
+    const start = Date.now(), duration = 620
+    const step = () => {
+      const t = Math.min(1, (Date.now() - start) / duration)
+      const ease = 1 - Math.pow(1 - t, 3)
+      if (t >= 1) return this.setData({ favDisplay: favorite, planDisplay: planCount })
+      this.setData({ favDisplay: Math.round(fromFav + (favorite - fromFav) * ease), planDisplay: Math.round(fromPlan + (planCount - fromPlan) * ease) })
+      setTimeout(step, 48)
+    }
+    step()
   },
   search(e) { this.setData({ query: e.detail.value }); this.filterPlans() },
   clearSearch() { this.setData({ query: '' }); this.filterPlans() },

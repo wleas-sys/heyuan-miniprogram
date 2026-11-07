@@ -22,7 +22,7 @@ function searchAll() {
   return { list: raw.map(p => Object.assign({}, p, { saved: saved.indexOf(p.id) >= 0, teaser: (p.highlights || [])[0] || (p.intro || '').split('。')[0], cardTags: (p.tags || []).slice(0, 2) })), saved }
 }
 Page(ui.page({
-  data: { keyword: '', category: '全部', categories, region: '全部地区', regions, onlySaved: false, list: [], total: 0, hasFilters: false, savedCount: 0, catInto: 'cat-0', regionInto: 'reg-0', poppedId: '' },
+  data: { keyword: '', category: '全部', categories, region: '全部地区', regions, onlySaved: false, list: [], total: 0, hasFilters: false, savedCount: 0, catInto: 'cat-0', regionInto: 'reg-0', poppedId: '', burstId: '', burstDots: [0, 1, 2, 3, 4, 5], loadedPhotos: {}, failedPhotos: {}, switchElastic: false },
   onShow() {
     ui.tab.call(this, 1)
     const global = getApp().globalData, filter = global.browseFilter
@@ -76,7 +76,15 @@ Page(ui.page({
     this.setData({ region: value, regionInto: 'reg-' + Math.max(0, regions.indexOf(value)) })
     this.refresh(); ui.scrollTop(0)
   },
-  toggleSaved() { this.setData({ onlySaved: !this.data.onlySaved }); this.refresh(); ui.scrollTop(0); ui.haptic() },
+  toggleSaved() {
+    this.setData({ onlySaved: !this.data.onlySaved })
+    this.refresh(); ui.scrollTop(0); ui.haptic()
+    // 滑钮先横向拉长、落位再收回，用两段状态模拟有质量的弹性
+    if (typeof setTimeout !== 'function') return
+    this.setData({ switchElastic: true })
+    if (this._switchTimer && typeof clearTimeout === 'function') clearTimeout(this._switchTimer)
+    this._switchTimer = setTimeout(() => { this._switchTimer = null; this.setData({ switchElastic: false }) }, 200)
+  },
   clearKeyword() { this.stopTimer(); this.setData({ keyword: '' }); this.refresh() },
   clear() { this.stopTimer(); this.setData({ keyword: '', category: '全部', region: '全部地区', onlySaved: false, catInto: 'cat-0', regionInto: 'reg-0' }); this.refresh() },
   favorite(e) {
@@ -87,12 +95,15 @@ Page(ui.page({
       ui.haptic()
       this.refresh()
       // 只让刚点的那一个书签弹一下，避免整页收藏项一起动
-      this.setData({ poppedId: wasSaved ? '' : id })
+      this.setData({ poppedId: wasSaved ? '' : id, burstId: wasSaved ? '' : id })
       if (this._popTimer && typeof clearTimeout === 'function') clearTimeout(this._popTimer)
-      if (typeof setTimeout === 'function') this._popTimer = setTimeout(() => { this._popTimer = null; this.setData({ poppedId: '' }) }, 320)
+      if (typeof setTimeout === 'function') this._popTimer = setTimeout(() => { this._popTimer = null; this.setData({ poppedId: '', burstId: '' }) }, 560)
       ui.toast(wasSaved ? '已取消收藏' : '已收藏，稍后再安排')
     } catch (error) { ui.fail(error) }
   },
+  // 图片加载完再淡入；加载失败就退回文字占位，不留白块
+  photoLoaded(e) { const id = e.currentTarget.dataset.id; if (id) this.setData({ ['loadedPhotos.' + id]: true }) },
+  photoFailed(e) { const id = e.currentTarget.dataset.id; if (id) this.setData({ ['failedPhotos.' + id]: true }) },
   detail(e) { ui.detail(e.currentTarget.dataset.id) },
   onShareAppMessage() { const first = PLACES.find(p => p.photo); return { title: '万绿智游｜找一个想去的地方', path: '/pages/attractions/attractions', imageUrl: first ? first.photo : '' } },
   onShareTimeline() { const first = PLACES.find(p => p.photo); return { title: '万绿智游｜河源目的地手册', imageUrl: first ? first.photo : '' } }

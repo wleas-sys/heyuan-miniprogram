@@ -9,3 +9,33 @@
 .favorite-button{transition:background-color .2s ease,transform .16s ease}
 .favorite-button.pop{animation:fav-pop .3s cubic-bezier(.3,1.4,.5,1)}
 .favorite-button.pop .bookmark-icon{animation:fav-pop .3s cubic-bezier(.3,1.4,.5,1)}
+
+/* 骨架落位：容器高度固定 332rpx，骨架与正式图同高，加载完淡入不跳动 */
+.place-visual{overflow:hidden}
+.place-visual.has-photo::before{content:"";position:absolute;left:0;top:0;right:0;bottom:0;background:linear-gradient(100deg,#E2EADF 28%,#F0F5EC 46%,#E2EADF 64%);background-size:220% 100%;animation:skeleton-sweep 1.5s linear infinite}
+@keyframes skeleton-sweep{from{background-position:120% 0}to{background-position:-60% 0}}
+.place-photo{position:relative;z-index:1;opacity:0;transition:opacity .32s ease}
+.place-photo.is-ready{opacity:1}
+.place-photo.photo-pending{opacity:1;position:relative;z-index:1}
+.photo-gradient{z-index:2}
+.photo-region{z-index:3}
+.favorite-button{z-index:4;overflow:visible}
+
+/* 弹性开关：滑钮起步拉长，落位收窄 */
+.mini-switch{width:54rpx;height:31rpx;border-radius:16rpx;background:#DCE5D5;position:relative;flex-shrink:0;margin-left:2rpx;transition:background-color .22s ease}
+.mini-switch.on{background:#386247}
+.mini-knob{position:absolute;top:3rpx;left:3rpx;width:25rpx;height:25rpx;border-radius:50%;background:#fff;box-shadow:0 1rpx 4rpx rgba(20,45,29,.2);transition:left .26s cubic-bezier(.22,1,.36,1),width .18s ease}
+.mini-switch.on .mini-knob{left:26rpx}
+.mini-switch.elastic .mini-knob{width:32rpx}
+.mini-switch.elastic.on .mini-knob{left:19rpx}
+
+/* 点击爆散：只在收藏成功时，六粒微光向外散开 */
+.burst{position:absolute;left:50%;top:50%;width:0;height:0;pointer-events:none}
+.burst-dot{position:absolute;left:0;top:0;width:7rpx;height:7rpx;margin:-3.5rpx 0 0 -3.5rpx;border-radius:50%;background:#F4F8EF;opacity:0;animation:burst-out .52s cubic-bezier(.2,.7,.3,1) forwards}
+.burst-dot.d0{--a:0deg}
+.burst-dot.d1{--a:60deg}
+.burst-dot.d2{--a:120deg}
+.burst-dot.d3{--a:180deg}
+.burst-dot.d4{--a:240deg}
+.burst-dot.d5{--a:300deg}
+@keyframes burst-out{0%{opacity:.9;transform:rotate(var(--a)) translateY(-8rpx) scale(.7)}100%{opacity:0;transform:rotate(var(--a)) translateY(-54rpx) scale(.25)}}

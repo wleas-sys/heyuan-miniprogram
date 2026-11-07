@@ -69,7 +69,8 @@ Page(ui.page({
     failedPhotos: {},
     saved: false,
     checksOpen: false, expandedStop: '',
-    undoOpen: false, undoText: '', undoPlan: null, flashId: ''
+    undoOpen: false, undoText: '', undoPlan: null, flashId: '',
+    daysLiquid: false, leavingId: '', ripples: []
   },
 
   onShow() {
@@ -97,8 +98,10 @@ Page(ui.page({
   clearTimers() {
     if (this._undoTimer && typeof clearTimeout === 'function') clearTimeout(this._undoTimer)
     if (this._flashTimer && typeof clearTimeout === 'function') clearTimeout(this._flashTimer)
+    if (this._liquidTimer && typeof clearTimeout === 'function') clearTimeout(this._liquidTimer)
     this._undoTimer = null
     this._flashTimer = null
+    this._liquidTimer = null
   },
 
   retryDraft() { this.onShow() },
@@ -183,6 +186,7 @@ Page(ui.page({
     if (!guard()) wx.navigateTo({ url: '/pages/plan-create/plan-create' })
   },
 
+  ripple(e) { ui.ripple.call(this, e, '#previewCta') },
   toggleStop(e) { const id = e.currentTarget.dataset.id; this.setData({ expandedStop: this.data.expandedStop === id ? '' : id }) },
   toggleChecks() { this.setData({ checksOpen: !this.data.checksOpen }) },
   ticketSource(e) { const row = this.data.view.days.reduce((a, d) => a.concat(d.places), []).find(x => x.id === e.currentTarget.dataset.id)?.ticketReference; if (row && row.source) ui.copy(row.source, '票价来源已复制') },
@@ -273,7 +277,7 @@ Page(ui.page({
       const copy = JSON.parse(JSON.stringify(p))
       while (copy.days.length < count) copy.days.push([])
       if (copy.days.length > count) copy.days = copy.days.slice(0, count)
-      if (this.commit(copy)) this.setData({ activeDay: Math.min(this.data.activeDay, count - 1) })
+      if (this.commit(copy)) { this.setData({ activeDay: Math.min(this.data.activeDay, count - 1) }); this.liquidDays() }
     }
     const removedStops = p.days.slice(count).reduce((sum, d) => sum + d.length, 0)
     if (count < p.days.length && removedStops > 0) {
@@ -429,19 +433,35 @@ Page(ui.page({
     })
   },
 
+  // 滑钮移动时先拉长、落位再收回，和日数、时间表同一条缓动
+  liquidDays() {
+    if (typeof setTimeout !== 'function') return
+    this.setData({ daysLiquid: true })
+    if (this._liquidTimer && typeof clearTimeout === 'function') clearTimeout(this._liquidTimer)
+    this._liquidTimer = setTimeout(() => { this._liquidTimer = null; this.setData({ daysLiquid: false }) }, 180)
+  },
+
   // 移除不再弹确认框，改成「先移除、再给 5 秒撤销」，少一次打断
   remove(e) {
     if (guard()) return
     const d = e.currentTarget.dataset, day = Number(d.day), index = Number(d.index)
     const placeId = this.data.plan.days[day] && this.data.plan.days[day][index]
-    if (!placeId) return
+    if (!placeId || this.data.leavingId) return
     let snapshot
     try { snapshot = JSON.parse(JSON.stringify(this.data.plan)) } catch (err) { return ui.fail(err) }
     const place = getPlace(placeId)
-    if (!this.commit(planner.removeStop(this.data.plan, day, index))) return
-    events.record('remove', placeId)
-    ui.haptic()
-    this.showUndo('已移除「' + (place ? (place.shortName || place.name) : '这一站') + '」', snapshot)
+    const text = '已移除「' + (place ? (place.shortName || place.name) : '这一站') + '」'
+    const finish = () => {
+      this.setData({ leavingId: '' })
+      if (!this.commit(planner.removeStop(this.data.plan, day, index))) return
+      events.record('remove', placeId)
+      ui.haptic()
+      this.showUndo(text, snapshot)
+    }
+    // 先让这张卡抽走、露出下面的时间线，再真正删；测试环境没有定时器能力时直接删
+    if (typeof setTimeout !== 'function') return finish()
+    this.setData({ leavingId: placeId })
+    setTimeout(finish, 170)
   },
 
   showUndo(text, snapshot) {

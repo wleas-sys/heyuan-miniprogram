@@ -14,6 +14,21 @@ function scrollTop(value) {
     if (typeof wx !== 'undefined' && typeof wx.pageScrollTo === 'function') wx.pageScrollTo({ scrollTop: typeof value === 'number' ? value : 0, duration: 260, fail() {} })
   } catch (e) {}
 }
+// 水波：波纹从手指落点扩散。拿不到按钮矩形或模拟器没有选择器查询时静默跳过，不阻塞点击。
+function ripple(e, selector) {
+  const page = this
+  const touch = (e && ((e.touches && e.touches[0]) || (e.changedTouches && e.changedTouches[0]))) || null
+  if (!touch || !selector || typeof wx === 'undefined' || typeof wx.createSelectorQuery !== 'function') return
+  const paint = rect => {
+    if (!rect) return
+    const id = (page._rippleSeq = (page._rippleSeq || 0) + 1)
+    const list = (page.data.ripples || []).concat([{ id, left: Math.round(touch.clientX - rect.left), top: Math.round(touch.clientY - rect.top) }]).slice(-3)
+    page.setData({ ripples: list })
+    if (typeof setTimeout !== 'function') return
+    setTimeout(() => { if (page.data) page.setData({ ripples: (page.data.ripples || []).filter(item => item.id !== id) }) }, 640)
+  }
+  try { wx.createSelectorQuery().select(selector).boundingClientRect(paint).exec() } catch (err) {}
+}
 function singlePage() { try { const options = typeof wx.getEnterOptionsSync === 'function' ? wx.getEnterOptionsSync() : typeof wx.getLaunchOptionsSync === 'function' ? wx.getLaunchOptionsSync() : {}; return options.scene === 1154 } catch (e) { return false } }
 // Timeline preview can read content, but editing/navigation need the full mini program.
 function page(config) {
@@ -65,4 +80,4 @@ function editor(message) {
   wx.switchTab({ url: '/pages/plan/plan', fail: () => toast('草稿已保留，请从底部“行程”打开') })
 }
 function home() { wx.switchTab({ url: '/pages/index/index' }) }
-module.exports = { toast, fail, haptic, scrollTop, singlePage, page, enableShare, tab, homeShare, homeTimeline, copy, previewPhotos, navigate, formatDate, detailPackage, detailUrl, detail, home, editor }
+module.exports = { toast, fail, haptic, scrollTop, ripple, singlePage, page, enableShare, tab, homeShare, homeTimeline, copy, previewPhotos, navigate, formatDate, detailPackage, detailUrl, detail, home, editor }

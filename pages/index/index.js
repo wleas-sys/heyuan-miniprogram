@@ -9,7 +9,7 @@ Page(ui.page({
   data: {
     routes: ROUTES.slice(0, 3).map(r => Object.assign({}, r, { stopCount: r.days.reduce((n, d) => n + d.length, 0) })), routesExpanded: false, routeCount: ROUTES.length,
     places: featured.map(card), hero: PLACES.find(p => p.id === 'wanlvhu') || PLACES[0],
-    draftCount: 0, draftDays: 1, draftTitle: '', keyword: '', placeCount: PLACES.length, heroFailed: false,
+    draftCount: 0, draftDays: 1, draftTitle: '', keyword: '', placeCount: PLACES.length, heroFailed: false, ripples: [],
     scenes: [{ category: '人文', title: '古城与看展', note: '走进河源的故事', icon: 'culture' }, { category: '山水', title: '湖山与户外', note: '留一天给山水', icon: 'landscape' }, { category: '温泉', title: '温泉与休息', note: '放慢周末的脚步', icon: 'spring' }]
   },
   onShow() { ui.tab.call(this, 0); const draft = storage.getDraft(); this.setData({ draftCount: draft.days.reduce((n, d) => n + d.length, 0), draftDays: draft.days.length, draftTitle: draft.title }) },
@@ -25,6 +25,7 @@ Page(ui.page({
   },
   goPlaces(e) { getApp().globalData.browseFilter = e.currentTarget.dataset.category || '全部'; wx.switchTab({ url: '/pages/attractions/attractions' }) },
   goPlan() { wx.switchTab({ url: '/pages/plan/plan' }) },
+  ripple(e) { ui.ripple.call(this, e, '#heroCta') },
   goCreate() { if (ui.singlePage()) return ui.toast('请先点击底部“前往小程序”'); wx.navigateTo({ url: '/pages/plan-create/plan-create', fail: () => ui.toast('暂时无法打开，请重试') }) },
   goChat() { if (ui.singlePage()) return ui.toast('请先点击底部“前往小程序”'); wx.navigateTo({ url: '/pages/chat/chat', fail: () => ui.toast('暂时无法打开，请重试') }) },
   photoError(e) {

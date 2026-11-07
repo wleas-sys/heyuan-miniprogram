@@ -46,3 +46,36 @@
 /* 站点调整区展开时淡入，避免内容突然撑开 */
 .stop-timing,.inside-break{animation:fold-in .2s ease-out both}
 @keyframes fold-in{from{opacity:0;transform:translateY(-6rpx)}to{opacity:1;transform:none}}
+
+/* 液态滑块：轨道、滑钮、日数同一条缓动；移动中先横向拉长 */
+.segmented{position:relative;padding:5rpx;gap:0}
+.segmented-track{position:relative;display:flex;width:100%}
+.segmented-thumb{position:absolute;top:0;bottom:0;width:20%;border-radius:12rpx;background:#fff;box-shadow:0 2rpx 9rpx rgba(23,63,53,.08);transition:left .28s cubic-bezier(.22,1,.36,1),transform .28s cubic-bezier(.22,1,.36,1);z-index:0}
+.segmented-thumb.liquid{transform:scaleX(1.12)}
+.segmented button{position:relative;z-index:1;background:transparent!important;box-shadow:none!important}
+.segmented button.selected{background:transparent!important;box-shadow:none!important}
+
+/* 单一元件形变：⌄/⌃ 不再换字形，而是同一枚箭头转 180°，位置不丢 */
+.fold-trigger{display:inline-flex;align-items:center;justify-content:flex-end;gap:8rpx}
+.fold-chevron{width:11rpx;height:11rpx;border-right:3rpx solid currentColor;border-bottom:3rpx solid currentColor;transform:rotate(45deg);transition:transform .26s cubic-bezier(.34,1.4,.64,1);flex-shrink:0;margin:4rpx 2rpx 0 6rpx}
+.fold-chevron.open{transform:rotate(-135deg);margin-top:-4rpx}
+
+/* 成功勾选：对勾分两笔画出，先短后长 */
+.check-box{position:relative}
+.check-stroke{position:absolute;background:#fff;border-radius:2rpx;opacity:0;transform-origin:bottom center}
+.stroke-a{width:3rpx;height:11rpx;left:16rpx;top:16rpx;transform:rotate(45deg) scaleY(0)}
+.stroke-b{width:3rpx;height:20rpx;left:17rpx;top:8rpx;transform:rotate(-45deg) scaleY(0)}
+.check-item.checked .stroke-a{opacity:1;animation:draw-a .18s ease-out both}
+.check-item.checked .stroke-b{opacity:1;animation:draw-b .22s .13s ease-out both}
+@keyframes draw-a{from{opacity:1;transform:rotate(45deg) scaleY(0)}to{opacity:1;transform:rotate(45deg) scaleY(1)}}
+@keyframes draw-b{from{opacity:1;transform:rotate(-45deg) scaleY(0)}to{opacity:1;transform:rotate(-45deg) scaleY(1)}}
+
+/* 卡片抽走：上层先移开，露出下面的时间线，再由数据真正删除 */
+.stop.leaving{animation:card-out .17s ease-in forwards;pointer-events:none}
+@keyframes card-out{from{opacity:1;transform:none}to{opacity:0;transform:translateX(-26rpx) scale(.97)}}
+
+/* 底部抽屉：上升后在落位处停一拍，让用户看清状态再收尾 */
+@keyframes sheet-up{0%{transform:translateY(100%)}55%{transform:translateY(-8rpx)}70%{transform:translateY(-8rpx)}86%{transform:translateY(0)}100%{transform:translateY(0)}}
+.cost-unit{display:flex;align-items:center;gap:2rpx}
+.cost-summary .fold-chevron{margin-left:6rpx}
+.check-count .fold-chevron{margin-left:4rpx;margin-top:2rpx}
