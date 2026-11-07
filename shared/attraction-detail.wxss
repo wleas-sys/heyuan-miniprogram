@@ -16,3 +16,5 @@
 .comment-recovery{display:flex;flex-wrap:wrap;gap:12rpx 24rpx;margin-top:10rpx}.comment-recovery button{font-size:23rpx;color:#496D48;padding:10rpx 0;text-align:left}.legacy-note-delete{font-size:22rpx;color:#99634F;padding:8rpx 0 18rpx;text-align:left}
 
 .gallery-retry{padding:20rpx 32rpx 32rpx;background:#F6F7F3}.gallery-retry button{width:100%;padding:22rpx;border-radius:18rpx;background:#E9F0E4;color:#173F35;font-size:26rpx}
+
+.verify-badge{display:inline-block;margin-left:10rpx;padding:2rpx 12rpx;border-radius:8rpx;background:#E6F0E2;color:#4A6B4D;font-size:20rpx;line-height:1.7;white-space:nowrap;vertical-align:middle}

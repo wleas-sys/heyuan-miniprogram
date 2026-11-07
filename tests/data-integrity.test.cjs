@@ -68,6 +68,15 @@ test('新增地点未核实的票价与开放信息都显式标注「待核对�
   }
 })
 
+test('价格核实标记格式正确，且不能与「待核对」同时出现', () => {
+  const verified = PLACES.filter(p => p.ticketVerified)
+  assert.ok(verified.length >= 10, '应有已核实票价的地点，实际 ' + verified.length)
+  for (const p of verified) {
+    assert.match(p.ticketVerified, /^\d{4}-\d{2}$/, p.id + ' 的核实时间格式应为 YYYY-MM')
+    assert.ok(!/待核对/.test(p.ticketText || ''), p.id + ' 标了已核实却仍写「待核对」')
+  }
+})
+
 test('所有地点都不编造坐标：map 要么为 null，要么带数值经纬度', () => {
   for (const p of PLACES) {
     if (p.map === null || p.map === undefined) continue
