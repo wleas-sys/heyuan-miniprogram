@@ -68,7 +68,7 @@ button.primary[disabled] { background: var(--green); color: #fff; }
 .timeline-notice { padding: 24rpx 32rpx; background: #EAF0E7; color: var(--green); font-size: 24rpx; line-height: 1.7; }
 .pressed { opacity: .78; transform: scale(.972); }
 /* 按下快速到位（.07s），松手用带过冲的曲线弹回，才有“重量” */
-.pressed, .pressed * { transition-duration: .07s !important; transition-timing-function: ease-out !important; }
+.pressed { transition-duration: .07s !important; transition-timing-function: ease-out !important; }
 .photo-frame { border-radius: 24rpx; overflow: hidden; background: #E2E8DC; }
 .photo-frame .block-photo { border-radius: 0; }
 .portrait-frame { padding: 20rpx; background: #E7EBE1; }
