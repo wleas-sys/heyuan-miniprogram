@@ -149,7 +149,7 @@
 .scene{flex:1;min-width:0;min-height:212rpx;text-align:left;padding:18rpx 16rpx;border:1rpx solid var(--line);background:transparent;display:flex;flex-direction:column;align-items:flex-start;transition:flex .36s cubic-bezier(.22,1,.36,1),background-color .3s ease;overflow:hidden}
 .scene.active{flex:2.5;background:var(--paper-2)}
 .scene-icon{margin:0 0 12rpx;width:52rpx;height:48rpx;flex-shrink:0}
-.scene-title{font-family:var(--serif);font-size:24rpx;letter-spacing:.5rpx;color:var(--ink);white-space:nowrap}
+.scene-title{font-family:var(--serif);font-size:24rpx;letter-spacing:.5rpx;color:var(--ink);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .scene-note{font-size:19rpx;color:var(--muted);line-height:1.55;margin-top:5rpx;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .scene.active .scene-note{-webkit-line-clamp:4}
 .scene-more{margin-top:auto;padding-top:14rpx;display:flex;flex-direction:column;gap:6rpx;opacity:0;animation:scene-in .34s ease-out .1s both}
