@@ -149,44 +149,6 @@ test('行程页移除前先给卡片上移出态，落位后写入草稿', () =>
   assert.ok(wxml.includes('leaving'), '模板里要绑定移出动画的类名')
 })
 
-test('路线卡组：点一下只散开，再点卡片才进入', () => {
-  const h = createHarness()
-  const home = h.page('index')
-  assert.equal(home.data.routesSpread, false)
-  const id = home.data.routes[0].id
-  home.routeTap({ currentTarget: { dataset: { id } } })
-  assert.equal(home.data.routesSpread, true, '第一次点只散开')
-  assert.equal(h.count('navigateTo'), 0, '不能直接跳走')
-  home.routeTap({ currentTarget: { dataset: { id } } })
-  assert.equal(h.last('navigateTo').url, '/pages/route-detail/route-detail?id=' + id)
-  home.collapseRoutes()
-  assert.equal(home.data.routesSpread, false)
-})
-
-test('展开全部路线时卡组收起并重新计算高度', () => {
-  const h = createHarness()
-  const home = h.page('index')
-  home.routeTap({ currentTarget: { dataset: { id: home.data.routes[0].id } } })
-  home.toggleRoutes()
-  assert.equal(home.data.routes.length, 11)
-  assert.equal(home.data.routesSpread, false, '换列表要收回卡组')
-  assert.ok(home.data.deckCollapsed > 600, '11 张收起后更高')
-  home.toggleRoutes()
-  assert.equal(home.data.routes.length, 3)
-})
-
-test('场景手风琴：先展开，再点才进分类', () => {
-  const h = createHarness()
-  const home = h.page('index')
-  assert.equal(home.data.sceneActive, -1)
-  home.sceneTap({ currentTarget: { dataset: { index: 1, category: '山水' } } })
-  assert.equal(home.data.sceneActive, 1)
-  assert.equal(h.count('switchTab'), 0, '展开时不该跳转')
-  home.sceneTap({ currentTarget: { dataset: { index: 1, category: '山水' } } })
-  assert.equal(h.app.globalData.browseFilter, '山水')
-  assert.equal(h.last('switchTab').url, '/pages/attractions/attractions')
-})
-
 test('清单背景进度随勾选前推，勾满后标记完成', () => {
   const h = createHarness()
   const storage = h.module('utils/storage.js')
