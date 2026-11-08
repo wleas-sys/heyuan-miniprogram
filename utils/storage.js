@@ -19,10 +19,26 @@ function savePlan(plan) {
   list.unshift(p); write(KEYS.plans, list); return p
 }
 function removePlan(id) { write(KEYS.plans, getPlans(true).filter(p => p.id !== id)) }
+// 老草稿可能引用了后来下线的地点：只剔除这些失效项，其余行程保留，避免整份草稿被判“损坏”
+function salvageDraft(value) {
+  if (!value || typeof value !== 'object' || !Array.isArray(value.days)) return null
+  const seen = new Set()
+  const days = value.days.map(day => Array.isArray(day) ? day.filter(id => {
+    if (typeof id !== 'string' || !getPlace(id) || seen.has(id)) return false
+    seen.add(id)
+    return true
+  }) : day)
+  try { return planner.normalize(Object.assign({}, value, { days })) } catch (e) { return null }
+}
 function getDraft(strict = false) {
   const value = read(KEYS.draft, null, strict)
   if (value === null) return planner.emptyPlan()
-  try { return planner.normalize(value) } catch (e) { if (strict) throw corrupt(); return planner.emptyPlan() }
+  try { return planner.normalize(value) } catch (e) {
+    const fixed = salvageDraft(value)
+    if (fixed) { try { write(KEYS.draft, fixed) } catch (err) {} return fixed }
+    if (strict) throw corrupt()
+    return planner.emptyPlan()
+  }
 }
 // Called only after explicit confirmation on the draft recovery screen.
 function recoverDraft() {

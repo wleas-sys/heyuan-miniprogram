@@ -159,19 +159,25 @@
 /* ===== 纸墨编辑风 · 对话 ===== */
 .chat-page{background:var(--paper)}
 .chat-top{background:var(--paper);border-bottom:1rpx solid var(--line);padding:16rpx 28rpx}
-.chat-top-text{font-size:20rpx;letter-spacing:.5rpx;color:var(--muted)}
-.chat-top-dot{background:var(--seal);border-radius:0;width:10rpx;height:10rpx}
-.chat-reset{border-radius:2rpx;border:1rpx solid var(--line-strong);background:transparent;box-shadow:none;font-size:20rpx;letter-spacing:1rpx;min-height:52rpx}
-.bubble{border-radius:0 8rpx 8rpx 8rpx;background:var(--card);border:1rpx solid var(--line);box-shadow:none}
-.msg.user .bubble{border-radius:8rpx 0 8rpx 8rpx;background:var(--green);border-color:var(--green)}
+.chat-top-text{font-size:22rpx;letter-spacing:.5rpx;color:var(--muted)}
+.chat-top-dot{background:var(--seal);border-radius:50%;width:10rpx;height:10rpx}
+.chat-reset{border-radius:16rpx;border:1rpx solid var(--line-strong);background:transparent;box-shadow:none;font-size:22rpx;letter-spacing:1rpx;min-height:52rpx}
+.bubble{border-radius:4rpx 18rpx 18rpx 18rpx;background:var(--card);border:1rpx solid var(--line);box-shadow:none}
+.msg.user .bubble{border-radius:18rpx 4rpx 18rpx 18rpx;background:var(--green);border-color:var(--green)}
 .bubble-text{font-size:26rpx;line-height:1.8}
-.avatar{border-radius:2rpx;background:var(--seal);box-shadow:none;font-family:var(--serif)}
-.plan-card{border-radius:2rpx;border:1rpx solid var(--line);background:transparent}
+.avatar{border-radius:16rpx;background:var(--seal);box-shadow:none;font-family:var(--serif)}
+.plan-card{border-radius:16rpx;border:1rpx solid var(--line);background:transparent}
 .plan-title{font-family:var(--serif);font-size:30rpx;letter-spacing:.3rpx}
 .plan-score{color:var(--seal)}
-.plan-use{border-radius:2rpx;background:var(--green);box-shadow:none;letter-spacing:1.5rpx}
-.chip{border-radius:2rpx;border:1rpx solid var(--line-strong);background:transparent;box-shadow:none;font-size:23rpx;letter-spacing:.5rpx;color:var(--ink-2)}
+.plan-use{border-radius:16rpx;background:var(--green);box-shadow:none;letter-spacing:1.5rpx}
+.chip{border-radius:16rpx;border:1rpx solid var(--line-strong);background:transparent;box-shadow:none;font-size:24rpx;letter-spacing:.5rpx;color:var(--ink-2)}
 .composer{background:var(--paper);border-top:1rpx solid var(--line);backdrop-filter:none}
-.composer-input{background:transparent;border:1rpx solid var(--line-strong);border-radius:2rpx}
-.composer-send{border-radius:2rpx;background:var(--green);box-shadow:none;letter-spacing:2rpx}
+.composer-input{background:transparent;border:1rpx solid var(--line-strong);border-radius:16rpx}
+.composer-send{border-radius:16rpx;background:var(--green);box-shadow:none;letter-spacing:2rpx}
 .composer-send[disabled]{background:var(--line-strong);color:var(--paper)}
+
+/* 细节打磨：气泡与输入框圆角 */
+.bubble{border-radius:6rpx 20rpx 20rpx 20rpx}
+.msg.user .bubble{border-radius:20rpx 6rpx 20rpx 20rpx}
+.composer-input{border-radius:14rpx}
+.composer-send{border-radius:12rpx}

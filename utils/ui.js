@@ -29,6 +29,24 @@ function ripple(e, selector) {
   }
   try { wx.createSelectorQuery().select(selector).boundingClientRect(paint).exec() } catch (err) {}
 }
+// 本机草稿格式异常时，不只报错：先备份原数据，再重试当前动作
+function offerRepair(error, retry) {
+  const message = error && error.message ? error.message : ''
+  if (message.indexOf('数据格式异常') < 0) return false
+  wx.showModal({
+    title: '旧草稿需要修复',
+    content: '本机草稿格式异常，原数据仍保留。可以先备份它，再用当前选择重新开始；已保存的行程不受影响。',
+    confirmText: '备份并继续',
+    cancelText: '暂不处理',
+    success(result) {
+      if (!result.confirm) return
+      try { require('./storage').recoverDraft() } catch (e) { return fail(e) }
+      try { retry() } catch (e) { fail(e) }
+    },
+    fail() { toast('暂时无法修复草稿，请稍后再试') }
+  })
+  return true
+}
 function singlePage() { try { const options = typeof wx.getEnterOptionsSync === 'function' ? wx.getEnterOptionsSync() : typeof wx.getLaunchOptionsSync === 'function' ? wx.getLaunchOptionsSync() : {}; return options.scene === 1154 } catch (e) { return false } }
 // Timeline preview can read content, but editing/navigation need the full mini program.
 function page(config) {
@@ -80,4 +98,4 @@ function editor(message) {
   wx.switchTab({ url: '/pages/plan/plan', fail: () => toast('草稿已保留，请从底部“行程”打开') })
 }
 function home() { wx.switchTab({ url: '/pages/index/index' }) }
-module.exports = { toast, fail, haptic, scrollTop, ripple, singlePage, page, enableShare, tab, homeShare, homeTimeline, copy, previewPhotos, navigate, formatDate, detailPackage, detailUrl, detail, home, editor }
+module.exports = { toast, fail, haptic, scrollTop, ripple, offerRepair, singlePage, page, enableShare, tab, homeShare, homeTimeline, copy, previewPhotos, navigate, formatDate, detailPackage, detailUrl, detail, home, editor }

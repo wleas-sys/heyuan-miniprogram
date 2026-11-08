@@ -31,7 +31,7 @@ Page(ui.page({
   edit() {
     const plan = this.data.view.plan
     let draft
-    try { draft = storage.getDraft(true) } catch (e) { ui.fail(e); return }
+    try { draft = storage.getDraft(true) } catch (e) { if (!ui.offerRepair(e, () => this.edit())) ui.fail(e); return }
     const go = () => { try { storage.setDraft(plan); ui.editor('已打开编辑草稿') } catch (e) { ui.fail(e) } }
     if (draft.days.some(d => d.length) && planner.signature(draft) !== planner.signature(plan)) wx.showModal({ title: '替换当前草稿？', content: '这份行程将作为新的编辑草稿。原草稿如需保留，请先到“行程”保存。', confirmText: '继续编辑', success: r => { if (r.confirm) go() } })
     else go()

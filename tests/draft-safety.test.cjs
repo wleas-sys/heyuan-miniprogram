@@ -58,17 +58,25 @@ for (const type of ['route', 'result', 'adopt']) {
     assert.equal(JSON.stringify(h.memory[storage.KEYS.draft]), before)
   })
 
-  test(type + ' 遇损坏草稿明确报错并保留原始数据', () => {
+  test(type + ' 遇损坏草稿先征询、备份后才重建', () => {
     const h = createHarness(), storage = h.module('utils/storage.js')
     h.memory[storage.KEYS.draft] = { schema: 13, days: 'broken', title: '保留原始损坏草稿' }
     const before = JSON.stringify(h.memory[storage.KEYS.draft])
     const action = makeAction(h, type)
+    h.replies.push({ confirm: false })
     action.run()
-    assert.equal(JSON.stringify(h.memory[storage.KEYS.draft]), before)
-    assert.equal(h.count('showModal'), 0)
+    assert.equal(h.count('showModal'), 1, '要给出可执行的恢复路径')
+    assert.equal(JSON.stringify(h.memory[storage.KEYS.draft]), before, '未确认前不得动原数据')
     assert.equal(h.count('switchTab'), 0)
-    assert.match(h.last('showToast').title, /本机数据格式异常/)
     if (type === 'adopt') assert.equal(action.page.data.adopting, false)
+
+    const retry = makeAction(h, type)
+    h.replies.push({ confirm: true })
+    retry.run()
+    assert.ok(Array.isArray(h.memory['heyuan.v13.draftBackups']), '要先备份原数据')
+    assert.equal(h.memory['heyuan.v13.draftBackups'][0].raw.days, 'broken')
+    assert.notEqual(JSON.stringify(h.memory[storage.KEYS.draft]), before, '确认后才重建草稿')
+    assert.equal(h.count('switchTab'), 1, '重建后进入编辑')
   })
 
   test(type + ' 首次使用可直接写入；确认后的写入失败不伪报成功', () => {
@@ -189,4 +197,14 @@ test('备份已满但其中包含当前原始草稿时直接复用，不受数�
   storage.recoverDraft()
   assert.equal(storage.getDraft(true).days[0].length, 0)
   assert.deepEqual(h.memory['heyuan.v13.draftBackups'], backups)
+})
+
+test('旧草稿引用了已下线地点时，保留其余地点并自动修复', () => {
+  const h = createHarness(), storage = h.module('utils/storage.js')
+  const plan = h.module('utils/planner.js').fromRoute('city')
+  plan.days[0].push('removed-place')
+  h.memory[storage.KEYS.draft] = plan
+  const fixed = storage.getDraft(true)
+  assert.equal(JSON.stringify(fixed.days[0]), JSON.stringify(plan.days[0].filter(id => id !== 'removed-place')))
+  assert.ok(!JSON.stringify(h.memory[storage.KEYS.draft]).includes('removed-place'), '修复结果要写回')
 })

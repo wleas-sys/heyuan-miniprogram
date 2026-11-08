@@ -19,7 +19,7 @@ Page(ui.page({
     const route = this.data.route
     if (!route) return
     let draft
-    try { draft = storage.getDraft(true) } catch (e) { ui.fail(e); return }
+    try { draft = storage.getDraft(true) } catch (e) { if (!ui.offerRepair(e, () => this.use())) ui.fail(e); return }
     const go = () => { try { storage.setDraft(planner.fromRoute(route.id)); ui.editor('已打开编辑草稿') } catch (e) { ui.fail(e) } }
     if (draft.days.some(d => d.length)) wx.showModal({ title: '用这条路线开始安排？', content: '会替换当前编辑草稿。需要保留原草稿时，请先到“行程”保存。', confirmText: '使用路线', success: r => { if (r.confirm) go() } })
     else go()

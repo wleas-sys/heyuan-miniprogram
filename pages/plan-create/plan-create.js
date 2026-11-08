@@ -56,6 +56,7 @@ Page(ui.page({
   },
   relax() { if (!this.guard()) return; const patch = { interest: '全部', region: '全部' }; if (this.data.form.mode === 'walk' && this.data.form.days > 1) patch.days = 1; this.update(patch); this.generate() },
   adopt(e) {
+    const event = e
     if (!this.guard() || this.data.adopting) return
     if (!this._generation || this._generation !== signature(this.data.form)) return ui.toast('条件已变化，请重新生成方案')
     const candidate = (this._candidates || []).find(item => item.id === e.currentTarget.dataset.id)
@@ -74,7 +75,7 @@ Page(ui.page({
       } catch (error) { this.setData({ adopting: false }); ui.fail(error) }
     }
     let draft
-    try { draft = storage.getDraft(true) } catch (e) { this.setData({ adopting: false }); ui.fail(e); return }
+    try { draft = storage.getDraft(true) } catch (err) { this.setData({ adopting: false }); if (!ui.offerRepair(err, () => this.adopt(event))) ui.fail(err); return }
     if (draft.days.some(day => day.length)) wx.showModal({ title: '采用这份行程方案？', content: '会替换当前正在编辑的草稿；已保存的行程不会改变。若要保留草稿，请先返回“行程”保存。', confirmText: '采用方案', cancelText: '暂不替换', success: result => { if (result.confirm) use(); else this.setData({ adopting: false }) }, fail: () => { this.setData({ adopting: false }); ui.toast('未替换草稿，请重试') } })
     else use()
   },
