@@ -7,7 +7,7 @@ const engine = require('../../utils/chat-engine')
 // days 用 0 表示"还不知道"，区别于用户明确选的 1 天。
 const DEFAULTS = { days: 0, date: '', mode: 'drive', pace: 'relaxed', interest: '全部', region: '全部', crowd: 'friends' }
 const MODE_LABEL = { drive: '自驾', transit: '公交', walk: '步行' }
-// 顶部一行「AI 现在理解成什么」，让人知道说的话有没有被听进去
+// 顶部一行「现在理解成什么」，让人知道说的话有没有被听进去
 function summaryOf(form) {
   if (!form || !form.days) return ''
   const parts = [form.days + ' 天']
