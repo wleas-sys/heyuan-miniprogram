@@ -3878,6 +3878,8 @@ function getPlace(id) { return PLACES.find(p => p.id === id) || null }
 function getRoute(id) { return ROUTES.find(r => r.id === id) || null }
 const MEDIA = require('./media')
 const { imageBase } = require('./config')
+const CLOUD_COVERS = require('./cloud-covers')
+const CLOUD_COVER_BASE = CLOUD_COVERS.env && CLOUD_COVERS.bucket ? 'cloud://' + CLOUD_COVERS.env + '.' + CLOUD_COVERS.bucket + '/covers/' : ''
 // 云端模式：配了图片地址就统一走网络，包体不再随每张图增长。
 const CLOUD_IMAGES = typeof imageBase === 'string' && imageBase.length > 0
 PLACES.forEach(p => {
@@ -3902,9 +3904,14 @@ PLACES.forEach(p => {
   // 只有确实登记了封面图的地点才给 photo。否则列表/行程会为一个不存在的
   // /assets/covers/<id>.jpg 发请求并 404（虽然 onError 会兜底成文字占位，但控制台很吵）。
   // 无图地点 photo 为空，WXML 直接走 wx:else 文字占位，详情页也直接省略图集。
-  p.photo = cover ? '/assets/covers/' + p.id + '.jpg' : ''
-  p.photoCredit = cover ? cover.credit : ''
+  // 云存储封面优先：只有清单里登记过、且已配置云环境的 id 才走 cloud://
+  const cloudCover = CLOUD_COVER_BASE && CLOUD_COVERS.ids.indexOf(p.id) >= 0 ? CLOUD_COVER_BASE + p.id + '.jpg' : ''
+  p.photo = cloudCover || (cover ? '/assets/covers/' + p.id + '.jpg' : '')
+  p.photoCredit = cover ? cover.credit : (cloudCover ? (CLOUD_COVERS.credits[p.id] || '') : '')
   p.photoPortrait = !!cover && cover.height > cover.width
+  if (cloudCover && !p.images.length) {
+    p.images = [{ file: cloudCover, subject: p.name, credit: CLOUD_COVERS.credits[p.id] || '', source: CLOUD_COVERS.credits[p.id] || '', license: '', licenseUrl: '', rightsStatus: '', year: '', note: '封面来自补图清单，版权与授权需自行核对', width: 0, height: 0 }]
+  }
 })
 ROUTES.forEach(r => {
   const p = getPlace(r.cover)

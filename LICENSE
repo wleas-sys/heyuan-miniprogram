@@ -1,0 +1,37 @@
+MIT License
+
+Copyright (c) 2026 wleas-sys
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+关于数据与图片
+
+本仓库的代码以 MIT 协议开源。
+
+但请注意：仓库内的景点资料、门票信息与图片**不随代码一同开源授权**。
+
+- `utils/data.js` 中的地点与票价信息来自河源市及各区县公开渠道（详见该文件 `SOURCES`
+  中登记的链接），仅供个人学习与技术演示使用，引用时请注明原始来源。
+- `assets/covers/` 与 `tools/cover-upload/covers/` 中的图片版权归原作者所有，
+  每张图的作者与来源记录在 `utils/media.js` 与 `utils/cloud-covers.js` 的
+  `credits` 字段中。转载前请自行核对授权条件。
+- 项目遵循「找不到可靠数据就不硬凑」的原则：无法核实的条目会标注「待核对」，
+  请勿将未核实的票价或开放时间直接用于实际出行决策。
